@@ -13,7 +13,7 @@ Package.on_use(function (api, where) {
     "autoform",
     "underscore-string-latest",
     "less",
-    "reaction-commerce"
+    "reaction-core"
   ], ["client", "server"]);
 
   api.add_files("common/collections.coffee",["client","server"]);
