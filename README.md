@@ -4,7 +4,7 @@ reaction-paypal
 This is based on David Brear's [meteor-paypal](https://github.com/DavidBrear/meteor-paypal.git)
 but heavily refactored for Reaction.
 
-Meteor/Reaction Package for Paypal integration
+Meteor/Reaction Package for PayPal integration
 
 
 ### Usage
@@ -38,10 +38,10 @@ Format is `Meteor.Paypal.*transaction_type*({ {/*card data*/}, {/*transaction da
     });
 ```
 
-For information on the **payment** object returned see [Paypal's Payment Option Documentation](https://developer.paypal.com/webapps/developer/docs/api/#common-payments-objects)
+For information on the **payment** object returned see [PayPal's Payment Option Documentation](https://developer.paypal.com/webapps/developer/docs/api/#common-payments-objects)
 
 Transaction types are: `Meteor.Paypal.authorize` and
-`Meteor.Paypal.purchase` for the difference, see [Paypal's
+`Meteor.Paypal.purchase` for the difference, see [PayPal's
 Documentation](https://developer.paypal.com/webapps/developer/docs/api/#payments)
 #### Extras
 
