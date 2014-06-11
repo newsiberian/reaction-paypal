@@ -73,7 +73,7 @@ Template.paypalPaymentForm.events
     # Submit for processing
     Meteor.Paypal.authorize form,
       total: Session.get "cartTotal"
-      currency: "USD"
+      currency: Shops.findOne().currency
     , (error, transaction) ->
       if error
         # this only catches connection/authentication errors
