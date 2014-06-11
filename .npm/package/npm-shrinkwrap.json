@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "paypal-rest-sdk": {
-      "version": "0.6.4",
+      "version": "0.8.0",
       "dependencies": {
         "node-uuid": {
           "version": "1.4.1"

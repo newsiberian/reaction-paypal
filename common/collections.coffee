@@ -1,23 +1,18 @@
-# "paypal": {
-# "host": "api.sandbox.paypal.com",
-# "port": "",
-# "client_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-# "client_secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+###
+#  Meteor.settings.paypal =
+#    mode: false  #sandbox
+#    client_id: ""
+#    client_secret: ""
+#  see: https://developer.paypal.com/webapps/developer/docs/api/
+#  see: https://github.com/paypal/rest-api-sdk-nodejs
+###
 
 @PaypalPackageSchema = new SimpleSchema([
   PackageConfigSchema
   {
-    settings:
-      type: Object
-      optional: true
-    "settings.host":
-      type: String
-      label: "Host"
-      #regEx: /^(?!:\/\/)([a-zA-Z0-9]+\.)?[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,6}?$/i
-    "settings.port":
-      type: String
-      label: "Port"
-      optional: true
+    "settings.mode":
+      type: Boolean
+      defaultValue: false
     "settings.client_id":
       type: String
       label: "API Id"
@@ -52,13 +47,18 @@ PaypalPackageSchema = @PaypalPackageSchema
     label: "CVV"
 
 PaypalPaymentSchema = @PaypalPaymentSchema
-
 ###
 # Fixture - we always want a record
 ###
 Meteor.startup ->
   unless Packages.findOne({name:"reaction-paypal"})
     Shops.find().forEach (shop) ->
+      unless Meteor.settings.paypal
+        Meteor.settings.paypal =
+          mode: false
+          client_id: ""
+          client_secret: ""
+
       Packages.insert
         shopId: shop._id
         name: "reaction-paypal"

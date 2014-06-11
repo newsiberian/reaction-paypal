@@ -77,7 +77,9 @@ Template.paypalPaymentForm.events
     , (error, transaction) ->
       if error
         # this only catches connection/authentication errors
+        console.log error
         for errors in error.response.details
+
           formattedError = "Oops! " + errors.issue + ": " + errors.field.split(/[. ]+/).pop().replace(/_/g,' ')
           paymentAlert(formattedError)
       else

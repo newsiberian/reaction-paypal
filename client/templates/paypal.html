@@ -4,13 +4,12 @@
 </div>
 <div class="row">
   <div class="col-md-6 well">
-  {{#autoForm collection="Packages" schema="PaypalPackageSchema" doc=packageData type="update" id="paypal-update-form"}}
-    {{>afQuickField name='settings.host' placeholder="api.sandbox.paypal.com" autofocus=''}}
-    {{>afQuickField name='settings.port'}}
-    {{>afQuickField name='settings.client_id'}}
-    {{>afQuickField name='settings.client_secret' type="password"}}
-    <button type="submit" class="btn btn-primary pull-right">Update</button>
-  {{/autoForm}}
+    {{#autoForm collection="Packages" schema="PaypalPackageSchema" doc=packageData type="update" id="paypal-update-form"}}
+      {{>afQuickField name='settings.client_id'}}
+      {{>afQuickField name='settings.client_secret' type="password"}}
+      {{>afQuickField name='settings.mode' select="true" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode" style="width:250px"}}
+      <button type="submit" class="btn btn-primary pull-right">Update</button>
+    {{/autoForm}}
   </div>
 </div>
 </template>
