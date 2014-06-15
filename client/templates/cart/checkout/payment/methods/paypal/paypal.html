@@ -5,7 +5,7 @@
         {{>afFieldLabel name="payerName" }}
         {{>afFieldInput name="payerName" value=cartPayerName}}
         {{#if afFieldIsInvalid name="payerName"}}
-        <span class="help-block">{{afFieldMessage "payerName"}}</span>
+        <span class="help-block">{{afFieldMessage name="payerName"}}</span>
         {{/if}}
     </div>
 
@@ -13,7 +13,7 @@
         {{>afFieldLabel name="cardNumber" }}
         {{>afFieldInput name="cardNumber" placeholder='XXXX XXXX XXXX XXXX'}}
         {{#if afFieldIsInvalid name="cardNumber"}}
-        <span class="help-block">{{afFieldMessage "cardNumber"}}</span>
+        <span class="help-block">{{afFieldMessage name="cardNumber"}}</span>
         {{/if}}
     </div>
   </div>
@@ -22,7 +22,7 @@
         {{>afFieldLabel name="expireMonth" }}
         {{>afFieldInput name="expireMonth" options=monthOptions placeholder="Exp. Month"}}
         {{#if afFieldIsInvalid name="expireMonth"}}
-        <span class="help-block">{{afFieldMessage "expireMonth"}}</span>
+        <span class="help-block">{{afFieldMessage name="expireMonth"}}</span>
         {{/if}}
     </div>
 
@@ -30,7 +30,7 @@
         {{>afFieldLabel name="expireYear" }}
         {{>afFieldInput name="expireYear" options=yearOptions placeholder="Exp. Year"}}
         {{#if afFieldIsInvalid name="expireYear"}}
-        <span class="help-block">{{afFieldMessage "expireYear"}}</span>
+        <span class="help-block">{{afFieldMessage name="expireYear"}}</span>
         {{/if}}
     </div>
 
@@ -38,7 +38,7 @@
         {{>afFieldLabel name="cvv" }}
         {{>afFieldInput name="cvv" placeholder="CVV"}}
         {{#if afFieldIsInvalid name="cvv"}}
-        <span class="help-block">{{afFieldMessage "cvv"}}</span>
+        <span class="help-block">{{afFieldMessage name="cvv"}}</span>
         {{/if}}
     </div>
   </div>

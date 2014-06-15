@@ -15,7 +15,7 @@
       defaultValue: false
     "settings.client_id":
       type: String
-      label: "API Id"
+      label: "API Client ID"
       min: 60
     "settings.client_secret":
       type: String
