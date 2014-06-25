@@ -28,7 +28,8 @@ PaypalPackageSchema = @PaypalPackageSchema
 @PaypalPaymentSchema = new SimpleSchema
   payerName:
     type: String
-    label: "Cardholder name"
+    label: "Cardholder name",
+    regEx: /^\w+\s\w+$/
   cardNumber:
     type: String
     min: 16
@@ -47,6 +48,10 @@ PaypalPackageSchema = @PaypalPackageSchema
     label: "CVV"
 
 PaypalPaymentSchema = @PaypalPaymentSchema
+
+PaypalPaymentSchema.messages
+  "regEx payerName": "[label] must include both first and last name"
+
 ###
 # Fixture - we always want a record
 ###
