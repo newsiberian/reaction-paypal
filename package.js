@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Paypal - Paypal payments for Reaction Commerce"
 });
 
-Npm.depends({'paypal-rest-sdk': '0.8.0'});
+Npm.depends({'paypal-rest-sdk': '0.9.3'});
 
 Package.on_use(function (api, where) {
   api.use([
