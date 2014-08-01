@@ -1,11 +1,11 @@
 Meteor.Paypal =
   account_options: ->
-    settings = Packages.findOne(name: "reaction-paypal").settings
-    if settings.mode is true then mode = "live" else mode = "sandbox"
+    settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+    if settings?.mode is true then mode = "live" else mode = "sandbox"
     options =
       mode: mode
-      client_id: settings.client_id
-      client_secret: settings.client_secret
+      client_id: settings?.client_id
+      client_secret: settings?.client_secret
     return options
 
   #authorize submits a payment authorization to Paypal

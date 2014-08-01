@@ -1,5 +1,5 @@
 <template name="paypalPaymentForm">
-  {{#autoForm schema="PaypalPaymentSchema" id="paypal-payment-form"}}
+  {{#autoForm schema="ReactionCore.Schemas.PaypalPayment" id="paypal-payment-form"}}
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
         {{>afFieldLabel name="payerName" }}
