@@ -1,6 +1,6 @@
 Template.paypal.helpers
   packageData: ->
-    return Packages.findOne({name:"reaction-paypal"})
+    return ReactionCore.Collections.Packages.findOne({name:"reaction-paypal"})
 
 AutoForm.hooks "paypal-update-form":
   onSuccess: (operation, result, template) ->

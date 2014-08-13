@@ -16,12 +16,14 @@ Package.on_use(function (api, where) {
     "reaction-core"
   ], ["client", "server"]);
 
-  api.add_files("common/collections.coffee",["client","server"]);
-  api.add_files("lib/paypal.coffee",["client","server"]);
+  api.add_files([
+    "common/register.coffee",
+    "common/collections.coffee",
+    "lib/paypal.coffee"
+  ],["client","server"]);
   api.add_files("server/paypal.coffee",["server"]);
   api.add_files([
     "client/routing.coffee",
-    "client/register.coffee",
     "client/templates/paypal.html",
     "client/templates/paypal.less",
     "client/templates/paypal.coffee",
@@ -30,9 +32,5 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/payment/methods/paypal/paypal.coffee"
   ],
   ["client"]);
-
-  api.export([
-    "PaypalPackageSchema",
-  ], ["client", "server"]);
 
 });

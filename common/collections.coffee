@@ -7,8 +7,8 @@
 #  see: https://github.com/paypal/rest-api-sdk-nodejs
 ###
 
-@PaypalPackageSchema = new SimpleSchema([
-  PackageConfigSchema
+ReactionCore.Schemas.PaypalPackageConfig = new SimpleSchema([
+  ReactionCore.Schemas.PackageConfig
   {
     "settings.mode":
       type: Boolean
@@ -23,9 +23,8 @@
       min: 60
   }
 ])
-PaypalPackageSchema = @PaypalPackageSchema
 
-@PaypalPaymentSchema = new SimpleSchema
+ReactionCore.Schemas.PaypalPayment = new SimpleSchema
   payerName:
     type: String
     label: "Cardholder name",
@@ -47,24 +46,5 @@ PaypalPackageSchema = @PaypalPackageSchema
     max: 4
     label: "CVV"
 
-PaypalPaymentSchema = @PaypalPaymentSchema
-
-PaypalPaymentSchema.messages
+ReactionCore.Schemas.PaypalPayment.messages
   "regEx payerName": "[label] must include both first and last name"
-
-###
-# Fixture - we always want a record
-###
-Meteor.startup ->
-  unless Packages.findOne({name:"reaction-paypal"})
-    Shops.find().forEach (shop) ->
-      unless Meteor.settings.paypal
-        Meteor.settings.paypal =
-          mode: false
-          client_id: ""
-          client_secret: ""
-
-      Packages.insert
-        shopId: shop._id
-        name: "reaction-paypal"
-        settings: Meteor.settings.paypal

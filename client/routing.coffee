@@ -4,4 +4,4 @@ Router.map ->
     path: 'dashboard/settings/paypal',
     template: 'paypal'
     waitOn: ->
-      PackagesHandle
+      return ReactionCore.Subscriptions.Packages
