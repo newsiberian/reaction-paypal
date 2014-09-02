@@ -1,5 +1,8 @@
 Package.describe({
-  summary: "Reaction Paypal - Paypal payments for Reaction Commerce"
+  summary: "Reaction Paypal - Paypal payments for Reaction Commerce",
+  name: "reactioncommerce:reaction-paypal",
+  version: "0.1.1",
+  git: "https://github.com/ongoworks/reaction-paypal.git"
 });
 
 Npm.depends({'paypal-rest-sdk': '0.9.3'});
@@ -8,12 +11,9 @@ Package.on_use(function (api, where) {
   api.use([
     "templating",
     "coffeescript",
-    "iron-router",
-    "simple-schema",
-    "autoform",
-    "underscore-string-latest",
     "less",
-    "reaction-core"
+    "mrt:underscore-string-latest",
+    "reactioncommerce:core"
   ], ["client", "server"]);
 
   api.add_files([
