@@ -1,5 +1,5 @@
 Package.describe({
-  summary: "Reaction Paypal - Paypal payments for Reaction Commerce",
+  summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
   version: "0.1.2",
   git: "https://github.com/ongoworks/reaction-paypal.git"
