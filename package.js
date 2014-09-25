@@ -8,12 +8,12 @@ Package.describe({
 Npm.depends({'paypal-rest-sdk': '0.9.3'});
 
 Package.on_use(function (api, where) {
+  api.versionsFrom('METEOR@0.9.0');
   api.use([
     "templating",
     "coffeescript",
     "less",
-    "mrt:underscore-string-latest",
-    "reactioncommerce:core"
+    "reactioncommerce:core@0.1.6"
   ], ["client", "server"]);
 
   api.add_files([
