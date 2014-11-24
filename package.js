@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "0.1.2",
+  version: "0.1.3",
   git: "https://github.com/ongoworks/reaction-paypal.git"
 });
 
@@ -13,7 +13,7 @@ Package.on_use(function (api, where) {
     "templating",
     "coffeescript",
     "less",
-    "reactioncommerce:core@0.1.6"
+    "reactioncommerce:core@0.2.1"
   ], ["client", "server"]);
 
   api.add_files([

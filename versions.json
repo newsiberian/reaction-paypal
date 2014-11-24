@@ -2,15 +2,15 @@
   "dependencies": [
     [
       "accounts-base",
-      "1.1.0"
+      "1.1.2"
     ],
     [
       "accounts-password",
-      "1.0.1"
+      "1.0.4"
     ],
     [
       "accounts-ui-unstyled",
-      "1.1.1"
+      "1.1.4"
     ],
     [
       "alanning:roles",
@@ -18,23 +18,23 @@
     ],
     [
       "aldeed:autoform",
-      "2.0.2"
+      "4.0.7"
     ],
     [
       "aldeed:collection2",
-      "2.1.0"
+      "2.2.0"
     ],
     [
       "aldeed:geocoder",
-      "0.3.1"
+      "0.3.3"
     ],
     [
       "aldeed:simple-schema",
-      "1.0.3"
+      "1.1.0"
     ],
     [
       "aldeed:template-extension",
-      "2.0.0"
+      "3.1.1"
     ],
     [
       "amplify",
@@ -42,35 +42,35 @@
     ],
     [
       "application-configuration",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "autoupdate",
-      "1.1.0"
+      "1.1.3"
     ],
     [
       "base64",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "binary-heap",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "blaze",
-      "2.0.0"
+      "2.0.3"
     ],
     [
       "blaze-tools",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "boilerplate-generator",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "callback-hook",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "cfs:access-point",
@@ -154,7 +154,7 @@
     ],
     [
       "check",
-      "1.0.0"
+      "1.0.2"
     ],
     [
       "cmather:handlebars-server",
@@ -162,7 +162,7 @@
     ],
     [
       "coffeescript",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "d3",
@@ -170,55 +170,55 @@
     ],
     [
       "dburles:collection-helpers",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "ddp",
-      "1.0.8"
+      "1.0.11"
     ],
     [
       "deps",
-      "1.0.3"
-    ],
-    [
-      "ejson",
-      "1.0.2"
-    ],
-    [
-      "email",
-      "1.0.2"
-    ],
-    [
-      "fastclick",
-      "1.0.0"
-    ],
-    [
-      "follower-livedata",
-      "1.0.1"
-    ],
-    [
-      "geojson-utils",
-      "1.0.0"
-    ],
-    [
-      "handlebars",
-      "1.0.0"
-    ],
-    [
-      "html-tools",
-      "1.0.0"
-    ],
-    [
-      "htmljs",
-      "1.0.1"
-    ],
-    [
-      "http",
       "1.0.5"
     ],
     [
+      "ejson",
+      "1.0.4"
+    ],
+    [
+      "email",
+      "1.0.4"
+    ],
+    [
+      "fastclick",
+      "1.0.1"
+    ],
+    [
+      "follower-livedata",
+      "1.0.2"
+    ],
+    [
+      "geojson-utils",
+      "1.0.1"
+    ],
+    [
+      "handlebars",
+      "1.0.1"
+    ],
+    [
+      "html-tools",
+      "1.0.2"
+    ],
+    [
+      "htmljs",
+      "1.0.2"
+    ],
+    [
+      "http",
+      "1.0.8"
+    ],
+    [
       "id-map",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "iron:core",
@@ -234,31 +234,35 @@
     ],
     [
       "iron:router",
-      "0.9.3"
+      "0.9.4"
     ],
     [
       "jquery",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "json",
+      "1.0.1"
+    ],
+    [
+      "launch-screen",
       "1.0.0"
     ],
     [
       "less",
-      "1.0.8"
+      "1.0.11"
     ],
     [
       "livedata",
-      "1.0.9"
+      "1.0.11"
     ],
     [
       "localstorage",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "logging",
-      "1.0.3"
+      "1.0.5"
     ],
     [
       "matb33:collection-hooks",
@@ -266,31 +270,31 @@
     ],
     [
       "meteor",
-      "1.1.0"
+      "1.1.3"
     ],
     [
       "meteor-platform",
-      "1.1.0"
+      "1.2.0"
     ],
     [
       "minifiers",
-      "1.1.0"
+      "1.1.2"
     ],
     [
       "minimongo",
-      "1.0.3"
-    ],
-    [
-      "mobile-status-bar",
-      "1.0.0"
-    ],
-    [
-      "mongo",
       "1.0.5"
     ],
     [
+      "mobile-status-bar",
+      "1.0.1"
+    ],
+    [
+      "mongo",
+      "1.0.8"
+    ],
+    [
       "mongo-livedata",
-      "1.0.4"
+      "1.0.6"
     ],
     [
       "mrt:moment",
@@ -306,11 +310,15 @@
     ],
     [
       "observe-sequence",
-      "1.0.2"
+      "1.0.3"
+    ],
+    [
+      "ongoworks:speakingurl",
+      "1.0.3"
     ],
     [
       "ordered-dict",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "raix:eventemitter",
@@ -322,31 +330,31 @@
     ],
     [
       "random",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "reactioncommerce:core",
-      "0.1.6"
+      "0.2.1"
     ],
     [
       "reactive-dict",
-      "1.0.2"
+      "1.0.4"
     ],
     [
       "reactive-var",
-      "1.0.1"
+      "1.0.3"
     ],
     [
       "reload",
-      "1.1.0"
+      "1.1.1"
     ],
     [
       "retry",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "routepolicy",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "sacha:spin",
@@ -354,62 +362,58 @@
     ],
     [
       "service-configuration",
-      "1.0.1"
-    ],
-    [
-      "session",
-      "1.0.1"
-    ],
-    [
-      "sha",
-      "1.0.0"
-    ],
-    [
-      "spacebars",
-      "1.0.1"
-    ],
-    [
-      "spacebars-compiler",
       "1.0.2"
     ],
     [
-      "srp",
-      "1.0.0"
+      "session",
+      "1.0.4"
     ],
     [
-      "standard-app-packages",
+      "sha",
+      "1.0.1"
+    ],
+    [
+      "spacebars",
+      "1.0.3"
+    ],
+    [
+      "spacebars-compiler",
+      "1.0.3"
+    ],
+    [
+      "srp",
       "1.0.1"
     ],
     [
       "templating",
-      "1.0.6"
+      "1.0.9"
     ],
     [
       "tracker",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "ui",
-      "1.0.2"
+      "1.0.4"
     ],
     [
       "underscore",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "url",
-      "1.0.0"
+      "1.0.2"
     ],
     [
       "webapp",
-      "1.1.1"
+      "1.1.4"
     ],
     [
       "webapp-hashing",
-      "1.0.0"
+      "1.0.1"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.31",
+  "toolVersion": "meteor-tool@1.0.35",
   "format": "1.0"
 }
