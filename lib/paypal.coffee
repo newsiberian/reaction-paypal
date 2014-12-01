@@ -4,8 +4,8 @@ Meteor.Paypal =
     if settings?.mode is true then mode = "live" else mode = "sandbox"
     options =
       mode: mode
-      client_id: settings?.client_id
-      client_secret: settings?.client_secret
+      client_id: settings?.client_id || Meteor.settings.paypal.client_id
+      client_secret: settings?.client_secret || Meteor.settings.paypal.client_secret
     return options
 
   #authorize submits a payment authorization to Paypal
