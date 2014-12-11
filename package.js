@@ -5,9 +5,9 @@ Package.describe({
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
-Npm.depends({'paypal-rest-sdk': '0.9.3'});
+Npm.depends({'paypal-rest-sdk': '1.2.2'});
 
-Package.on_use(function (api, where) {
+Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');
   api.use([
     "templating",
