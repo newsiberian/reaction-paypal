@@ -9,12 +9,10 @@ Npm.depends({'paypal-rest-sdk': '1.2.2'});
 
 Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');
-  api.use([
-    "templating",
-    "coffeescript",
-    "less",
-    "reactioncommerce:core@0.2.2"
-  ], ["client", "server"]);
+  api.use("meteor-platform");
+  api.use("coffeescript");
+  api.use("less");
+  api.use("reactioncommerce:core@0.2.2");
 
   api.add_files([
     "common/register.coffee",
