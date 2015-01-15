@@ -12,7 +12,6 @@ ReactionCore.registerPackage
     client_secret: ""
   priority: '2'
   hasWidget: false
-  autoEnable: true
   shopPermissions: [
     {
       label: "Pay Pal"
