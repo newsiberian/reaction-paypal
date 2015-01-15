@@ -3,10 +3,13 @@ reaction-paypal
 
 Meteor/Reaction Package for Paypal integration, installed by default with core packages.
 
+This is a prototype module -> pull requests are celebrated, feedback encouraged.
+
+International user? See: https://github.com/reactioncommerce/reaction/issues/96
+
 ### Usage
 ```console
-mrt add reaction-
-paypal
+meteor add reactioncommerce:reaction-paypal
 ```
 
 ### Configuration

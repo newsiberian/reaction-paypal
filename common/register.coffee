@@ -1,6 +1,7 @@
 ReactionCore.registerPackage
   name: 'reaction-paypal'
   provides: ['paymentMethod']
+  paymentTemplate: "paypalPaymentForm"
   label: 'PayPal'
   description: 'Accept PayPal'
   icon: 'fa fa-shopping-cart'

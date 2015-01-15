@@ -1,5 +1,3 @@
-Template.paypalPaymentForm.replaces("paymentMethodsCards")
-
 getCardType = (number) ->
   re = new RegExp("^4")
   return "visa"  if number.match(re)?
