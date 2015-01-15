@@ -24,7 +24,7 @@ Meteor.methods
           payment: payment
       return
     , (e) ->
-      console.error e
+      ReactionCore.Events.warn e
       return
     )
     fut.wait()
