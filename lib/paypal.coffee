@@ -1,37 +1,37 @@
 Meteor.Paypal =
-  account_options: ->
+  accountOptions: ->
     settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
     if settings?.mode is true then mode = "live" else mode = "sandbox"
     options =
       mode: mode
-      client_id: settings?.client_id
-      client_secret: settings?.client_secret
+      client_id: settings?.client_id || Meteor.settings.paypal.client_id
+      client_secret: settings?.client_secret || Meteor.settings.paypal.client_secret
     return options
 
   #authorize submits a payment authorization to Paypal
-  authorize: (card_info, payment_info, callback) ->
-    Meteor.call "paypalSubmit", "authorize", card_info, payment_info, callback
+  authorize: (cardInfo, paymentInfo, callback) ->
+    Meteor.call "paypalSubmit", "authorize", cardInfo, paymentInfo, callback
     return
 
   # purchase: function(card_info, payment_info, callback){
   #   Meteor.call('paypalSubmit', 'sale', card_info, payment_info, callback);
   # },
   capture: (transactionId, amount, callback) ->
-    capture_details =
+    captureDetails =
       amount:
         currency: "USD"
         total: amount
       is_final_capture: true
 
-    Meteor.call "paypalCapture", transactionId, capture_details, callback
+    Meteor.call "paypalCapture", transactionId, captureDetails, callback
     return
 
   #config is for the paypal configuration settings.
   config: (options) ->
-    @account_options = options
+    @accountOptions = options
     return
 
-  payment_json: ->
+  paymentObj: ->
     intent: "sale"
     payer:
       payment_method: "credit_card"

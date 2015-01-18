@@ -5,7 +5,7 @@ Template.paypal.helpers
 AutoForm.hooks "paypal-update-form":
   onSuccess: (operation, result, template) ->
     Alerts.removeSeen()
-    Alerts.add "Paypal settings saved.", "success"
+    Alerts.add "Paypal settings saved.", "success", autoHide: true
 
   onError: (operation, error, template) ->
     Alerts.removeSeen()
