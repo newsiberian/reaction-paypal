@@ -36,7 +36,7 @@ Meteor.methods
 
     fut = new Future()
     @unblock()
-    PayPal.authorization.capture transactionId, captureDetails, (error, result) ->
+    PayPal.authorization.capture transactionId, captureDetails, Meteor.bindEnvironment((error, result) ->
       if error
         fut.return
           saved: false
@@ -46,4 +46,8 @@ Meteor.methods
           saved: true
           response: result
       return
+    , (e) ->
+      ReactionCore.Events.warn e
+      return
+    )
     fut.wait()

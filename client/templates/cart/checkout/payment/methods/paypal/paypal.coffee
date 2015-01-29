@@ -104,22 +104,22 @@ AutoForm.addHooks "paypal-payment-form",
       else
         if transaction.saved is true #successful transaction
 
-        # Normalize status
-        normalizedStatus = switch transaction.response.state
-          when "created" then "created"
-          when "approved" then "created"
-          when "failed" then "failed"
-          when "canceled" then "canceled"
-          when "expired" then "expired"
-          when "pending" then "pending"
-          else "failed"
+          # Normalize status
+          normalizedStatus = switch transaction.response.state
+            when "created" then "created"
+            when "approved" then "created"
+            when "failed" then "failed"
+            when "canceled" then "canceled"
+            when "expired" then "expired"
+            when "pending" then "pending"
+            else "failed"
 
-        # Normalize mode
-        normalizedMode = switch transaction.response.intent
-          when "sale" then "capture"
-          when "authorize" then "authorize"
-          when "order" then "capture"
-          else "capture"
+          # Normalize mode
+          normalizedMode = switch transaction.response.intent
+            when "sale" then "capture"
+            when "authorize" then "authorize"
+            when "order" then "capture"
+            else "capture"
 
           # Format the transaction to store with order and submit to CartWorkflow
           paymentMethod =
