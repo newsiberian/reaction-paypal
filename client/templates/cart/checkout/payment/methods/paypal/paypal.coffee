@@ -114,6 +114,8 @@ AutoForm.addHooks "paypal-payment-form",
             mode: transaction.response.intent
             createdAt: new Date(transaction.response.create_time)
             updatedAt: new Date(transaction.response.update_time)
+            transactions: []
+          paymentMethod.transactions.push transaction.response
 
           # Store transaction information with order
           # paymentMethod will auto transition to
