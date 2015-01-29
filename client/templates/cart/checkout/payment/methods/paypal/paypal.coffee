@@ -107,13 +107,13 @@ AutoForm.addHooks "paypal-payment-form",
           paymentMethod =
             processor: "Paypal"
             storedCard: storedCard
-            method: transaction.payment.payer.payment_method
-            transactionId: transaction.payment.transactions[0].related_resources[0].authorization.id
-            amount: transaction.payment.transactions[0].amount.total
-            status: transaction.payment.state
-            mode: transaction.payment.intent
-            createdAt: new Date(transaction.payment.create_time)
-            updatedAt: new Date(transaction.payment.update_time)
+            method: transaction.response.payer.payment_method
+            transactionId: transaction.response.transactions[0].related_resources[0].authorization.id
+            amount: transaction.response.transactions[0].amount.total
+            status: transaction.response.state
+            mode: transaction.response.intent
+            createdAt: new Date(transaction.response.create_time)
+            updatedAt: new Date(transaction.response.update_time)
 
           # Store transaction information with order
           # paymentMethod will auto transition to
