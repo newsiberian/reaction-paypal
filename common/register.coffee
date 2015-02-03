@@ -15,7 +15,7 @@ ReactionCore.registerPackage
   autoEnable: false
   shopPermissions: [
     {
-      label: "Pay Pal"
+      label: "PayPal"
       permission: "dashboard/payments"
       group: "Shop Settings"
     }
