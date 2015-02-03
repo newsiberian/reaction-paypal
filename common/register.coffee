@@ -3,8 +3,8 @@ ReactionCore.registerPackage
   provides: ['paymentMethod']
   paymentTemplate: "paypalPaymentForm"
   label: 'PayPal'
-  description: 'Accept PayPal'
-  icon: 'fa fa-shopping-cart'
+  description: 'Accept PayPal payments'
+  icon: 'fa fa-paypal'
   settingsRoute: 'paypal'
   defaultSettings:
     mode: false
@@ -12,6 +12,7 @@ ReactionCore.registerPackage
     client_secret: ""
   priority: '2'
   hasWidget: true
+  autoEnable: false
   shopPermissions: [
     {
       label: "Pay Pal"

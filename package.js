@@ -26,7 +26,6 @@ Package.onUse(function (api, where) {
     "client/templates/paypal.less",
     "client/templates/paypal.coffee",
     "client/templates/cart/checkout/payment/methods/paypal/paypal.html",
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.less",
     "client/templates/cart/checkout/payment/methods/paypal/paypal.coffee"
   ],
   ["client"]);

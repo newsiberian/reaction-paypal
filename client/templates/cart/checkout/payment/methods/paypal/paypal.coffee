@@ -1,16 +1,5 @@
-getCardType = (number) ->
-  re = new RegExp("^4")
-  return "visa"  if number.match(re)?
-  re = new RegExp("^(34|37)")
-  return "amex"  if number.match(re)?
-  re = new RegExp("^5[1-5]")
-  return "mastercard"  if number.match(re)?
-  re = new RegExp("^6011")
-  return "discover"  if number.match(re)?
-  ""
-
 uiEnd = (template, buttonText) ->
-  template.$(":input").removeAttr("disabled")
+  template.$(".cart-checkout-step *").removeAttr("disabled")
   template.$("#btn-complete-order").text(buttonText)
   template.$("#btn-processing").addClass("hidden")
 
@@ -34,7 +23,7 @@ handlePaypalSubmitError = (error) ->
   else if serverError
     paymentAlert("Oops! " + serverError)
 
-
+Template.paypalPaymentForm.helpers
 # used to track asynchronous submitting for UI changes
 submitting = false
 
@@ -62,13 +51,9 @@ AutoForm.addHooks "paypal-payment-form",
     # Reaction only stores type and 4 digits
     storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4)
 
-    # Order Layout
-    $(".list-group a").css("text-decoration", "none")
-    $(".list-group-item").removeClass("list-group-item")
-
     # Submit for processing
     Meteor.Paypal.authorize form,
-      total: Session.get "cartTotal"
+      total: ReactionCore.Collections.Cart.findOne().cartTotal()
       currency: Shops.findOne().currency
     , (error, transaction) ->
       submitting = false
@@ -80,17 +65,37 @@ AutoForm.addHooks "paypal-payment-form",
         return
       else
         if transaction.saved is true #successful transaction
+
+          # Normalize status
+          normalizedStatus = switch transaction.response.state
+            when "created" then "created"
+            when "approved" then "created"
+            when "failed" then "failed"
+            when "canceled" then "canceled"
+            when "expired" then "expired"
+            when "pending" then "pending"
+            else "failed"
+
+          # Normalize mode
+          normalizedMode = switch transaction.response.intent
+            when "sale" then "capture"
+            when "authorize" then "authorize"
+            when "order" then "capture"
+            else "capture"
+
           # Format the transaction to store with order and submit to CartWorkflow
           paymentMethod =
             processor: "Paypal"
             storedCard: storedCard
-            method: transaction.payment.payer.payment_method
-            transactionId: transaction.payment.transactions[0].related_resources[0].authorization.id
-            amount: transaction.payment.transactions[0].amount.total
-            status: transaction.payment.state
-            mode: transaction.payment.intent
-            createdAt: new Date(transaction.payment.create_time)
-            updatedAt: new Date(transaction.payment.update_time)
+            method: transaction.response.payer.payment_method
+            transactionId: transaction.response.transactions[0].related_resources[0].authorization.id
+            amount: transaction.response.transactions[0].amount.total
+            status: normalizedStatus
+            mode: normalizedMode
+            createdAt: new Date(transaction.response.create_time)
+            updatedAt: new Date(transaction.response.update_time)
+            transactions: []
+          paymentMethod.transactions.push transaction.response
 
           # Store transaction information with order
           # paymentMethod will auto transition to
@@ -109,9 +114,10 @@ AutoForm.addHooks "paypal-payment-form",
 
   beginSubmit: (formId, template) ->
     # Show Processing
-    template.$(":input").attr("disabled", true)
+    template.$(".cart-checkout-step *").attr("disabled", true)
     template.$("#btn-complete-order").text("Submitting ")
     template.$("#btn-processing").removeClass("hidden")
+
   endSubmit: (formId, template) ->
     # Hide processing UI here if form was not valid
     uiEnd(template, "Complete your order") if not submitting

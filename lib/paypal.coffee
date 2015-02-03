@@ -13,9 +13,8 @@ Meteor.Paypal =
     Meteor.call "paypalSubmit", "authorize", cardInfo, paymentInfo, callback
     return
 
-  # purchase: function(card_info, payment_info, callback){
-  #   Meteor.call('paypalSubmit', 'sale', card_info, payment_info, callback);
-  # },
+  # TODO - add a "charge" function that creates a new charge and captures all at once
+
   capture: (transactionId, amount, callback) ->
     captureDetails =
       amount:
