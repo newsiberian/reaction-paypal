@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "0.3.0",
+  version: "0.3.1",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
@@ -12,7 +12,7 @@ Package.onUse(function (api, where) {
   api.use("meteor-platform@1.2.1");
   api.use("coffeescript");
   api.use("less");
-  api.use("reactioncommerce:core@0.2.3");
+  api.use("reactioncommerce:core@0.3.0");
 
   api.add_files([
     "common/register.coffee",
