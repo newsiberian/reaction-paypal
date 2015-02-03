@@ -95,7 +95,7 @@ raix:ui-dropped-event@0.0.7
 random@1.0.2
 reactioncommerce:core@0.2.3
 reactioncommerce:core-theme@1.0.6
-reactioncommerce:reaction-paypal@0.1.5
+reactioncommerce:reaction-paypal@0.3.0
 reactive-dict@1.0.5
 reactive-var@1.0.4
 reload@1.1.2
