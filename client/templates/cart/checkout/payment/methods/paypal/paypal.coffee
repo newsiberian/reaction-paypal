@@ -23,7 +23,6 @@ handlePaypalSubmitError = (error) ->
   else if serverError
     paymentAlert("Oops! " + serverError)
 
-Template.paypalPaymentForm.helpers
 # used to track asynchronous submitting for UI changes
 submitting = false
 
