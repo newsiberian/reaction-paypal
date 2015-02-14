@@ -15,14 +15,14 @@ ReactionCore.registerPackage
       description: 'PayPal Payment for Reaction Commerce'
       icon: 'fa fa-paypal' # glyphicon/fa
       cycle: '3' # Core, Stable, Testing (currently testing)
-      container: 'dashboard'  #group this with settings
+      container: 'reaction-paypal'  #group this with settings
     }
     # configures settings link for app card
     # use 'group' to link to dashboard card
     {
       route: 'paypal'
       provides: 'settings'
-      container: 'dashboard'
+      container: 'reaction-paypal'
     }
     # configures template for checkout
     # paymentMethod dynamic template
