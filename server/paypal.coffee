@@ -5,6 +5,10 @@ Future = Npm.require("fibers/future")
 Meteor.methods
   #submit (sale, authorize)
   paypalSubmit: (transactionType, cardData, paymentData) ->
+    check transactionType, String
+    check cardData, Object
+    check paymentData, Object
+
     PayPal.configure Meteor.Paypal.accountOptions()
     paymentObj = Meteor.Paypal.paymentObj()
     paymentObj.intent = transactionType
@@ -32,6 +36,9 @@ Meteor.methods
 
   # capture (existing authorization)
   paypalCapture: (transactionId, captureDetails) ->
+    check transactionId, String
+    check captureDetails, Object
+
     PayPal.configure Meteor.Paypal.accountOptions()
 
     fut = new Future()
