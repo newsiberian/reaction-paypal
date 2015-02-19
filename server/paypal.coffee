@@ -5,10 +5,6 @@ Future = Npm.require("fibers/future")
 Meteor.methods
   #submit (sale, authorize)
   paypalSubmit: (transactionType, cardData, paymentData) ->
-    check transactionType, String
-    check cardData, Object
-    check paymentData, Object
-
     PayPal.configure Meteor.Paypal.accountOptions()
     paymentObj = Meteor.Paypal.paymentObj()
     paymentObj.intent = transactionType
@@ -36,9 +32,6 @@ Meteor.methods
 
   # capture (existing authorization)
   paypalCapture: (transactionId, captureDetails) ->
-    check transactionId, String
-    check captureDetails, Object
-
     PayPal.configure Meteor.Paypal.accountOptions()
 
     fut = new Future()
@@ -58,3 +51,16 @@ Meteor.methods
       return
     )
     fut.wait()
+
+  # used by pay with paypal button on the client
+  getBuynowSettings: () ->
+
+  	settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+
+  	buynowSettings = {
+  		merchant_id: settings.merchant_id
+  		mode: settings.buynow_mode
+  		enabled: settings.buynow_enabled
+    }
+
+  	return buynowSettings

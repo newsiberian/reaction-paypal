@@ -23,8 +23,46 @@ handlePaypalSubmitError = (error) ->
   else if serverError
     paymentAlert("Oops! " + serverError)
 
+Template.paypalPaymentForm.helpers
+  buynowEnabled: ->
+    buynowSettings = Session.get 'buynowSettings'
+    return buynowSettings.enabled
+
+Template.paypalPaymentForm.created = () ->
+  Meteor.call "getBuynowSettings", (error, buynowSettings) ->
+    Session.set 'buynowSettings', buynowSettings unless error
+
+Template.buynowButton.helpers
+  buynowSettings: ->
+    test =
+      one: "data1"
+      two: "data2"
+    return test
+
 # used to track asynchronous submitting for UI changes
 submitting = false
+
+Template.buynowButton.rendered = () ->
+  console.log @
+  Meteor.call "getBuynowSettings", (error, buynowSettings) ->
+    unless error
+      # Define where to insert the script
+      insertID = document.getElementById('buynow');
+      # Define the script itself
+      script = document.createElement('script');
+      script.async = 'async';
+      script.src = 'https://www.paypalobjects.com/js/external/paypal-button.min.js?merchant=' + buynowSettings.merchant_id
+      script.setAttribute 'data-button', 'buynow'
+      script.setAttribute 'data-name', Shops.findOne().name + " purchase"
+      script.setAttribute 'data-quantity', '1'
+      script.setAttribute 'data-amount', ReactionCore.Collections.Cart.findOne().cartTotal()
+      script.setAttribute 'data-currency', Shops.findOne().currency
+      script.setAttribute 'data-callback', 'localhost'
+      env = if buynowSettings.mode then 'live' else 'sandbox'
+      script.setAttribute 'data-env', env
+      insertID.appendChild(script)
+    # // <script async="async" src="" data-button="buynow" data-name="" data-quantity="" data-amount="" data-currency="" data-callback="" data-env="">
+    # // </script>
 
 AutoForm.addHooks "paypal-payment-form",
   onSubmit: (doc) ->

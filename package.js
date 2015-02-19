@@ -6,7 +6,7 @@ Package.describe({
   icon: 'fa fa-paypal'
 });
 
-Npm.depends({'paypal-rest-sdk': '1.2.2'});
+Npm.depends({'paypal-rest-sdk': '1.5.0'});
 
 Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');

@@ -1,4 +1,8 @@
 <template name="paypalPaymentForm">
+  {{#if buynowEnabled}}
+    {{> buynowButton}}
+  {{/if}}
+
   {{#autoForm schema="ReactionCore.Schemas.PaypalPayment" id="paypal-payment-form"}}
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
@@ -50,4 +54,9 @@
   </button>
 
   {{/autoForm}}
+</template>
+
+<template name="buynowButton">
+  {{buynowSettings.one}}
+  <div id="buynow"></div>
 </template>
