@@ -2,6 +2,11 @@ PayPal = Npm.require("paypal-rest-sdk")
 Fiber = Npm.require("fibers")
 Future = Npm.require("fibers/future")
 
+Meteor.startup ->
+  # set browser policy
+  BrowserPolicy.content.allowOriginForAll("https://www.paypalobjects.com")
+
+
 Meteor.methods
   #submit (sale, authorize)
   paypalSubmit: (transactionType, cardData, paymentData) ->
