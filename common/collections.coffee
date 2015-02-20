@@ -10,9 +10,18 @@
 ReactionCore.Schemas.PaypalPackageConfig = new SimpleSchema([
   ReactionCore.Schemas.PackageConfig
   {
-    "settings.mode":
+    "settings.buynow_enabled":
+      type: Boolean
+      defaultValue: true
+    "settings.merchant_id":
+      type: String
+      label: "Merchant ID"
+    "settings.buynow_mode":
       type: Boolean
       defaultValue: false
+    "settings.payflow_enabled":
+      type: Boolean
+      defaultValue: true
     "settings.client_id":
       type: String
       label: "API Client ID"
@@ -21,6 +30,9 @@ ReactionCore.Schemas.PaypalPackageConfig = new SimpleSchema([
       type: String
       label: "API Secret"
       min: 60
+    "settings.payflow_mode":
+      type: Boolean
+      defaultValue: false
   }
 ])
 

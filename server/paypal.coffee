@@ -1,16 +1,17 @@
-PayPal = Npm.require("paypal-rest-sdk")
+PayFlow = Npm.require("paypal-rest-sdk")
+PayPalCheckout = Npm.require("paypal-express-checkout")
 Fiber = Npm.require("fibers")
 Future = Npm.require("fibers/future")
 
 Meteor.startup ->
   # set browser policy
-  BrowserPolicy.content.allowOriginForAll("https://www.paypalobjects.com")
+  BrowserPolicy.content.allowOriginForAll("https://www.paypal.com")
 
 
 Meteor.methods
   #submit (sale, authorize)
   paypalSubmit: (transactionType, cardData, paymentData) ->
-    PayPal.configure Meteor.Paypal.accountOptions()
+    PayFlow.configure Meteor.Paypal.accountOptions()
     paymentObj = Meteor.Paypal.paymentObj()
     paymentObj.intent = transactionType
     paymentObj.payer.funding_instruments.push Meteor.Paypal.parseCardData(cardData)
@@ -18,7 +19,7 @@ Meteor.methods
 
     fut = new Future()
     @unblock()
-    PayPal.payment.create paymentObj, Meteor.bindEnvironment((error, result) ->
+    PayFlow.payment.create paymentObj, Meteor.bindEnvironment((error, result) ->
       if error
         fut.return
           saved: false
@@ -37,11 +38,11 @@ Meteor.methods
 
   # capture (existing authorization)
   paypalCapture: (transactionId, captureDetails) ->
-    PayPal.configure Meteor.Paypal.accountOptions()
+    PayFlow.configure Meteor.Paypal.accountOptions()
 
     fut = new Future()
     @unblock()
-    PayPal.authorization.capture transactionId, captureDetails, Meteor.bindEnvironment((error, result) ->
+    PayFlow.authorization.capture transactionId, captureDetails, Meteor.bindEnvironment((error, result) ->
       if error
         fut.return
           saved: false
@@ -58,14 +59,14 @@ Meteor.methods
     fut.wait()
 
   # used by pay with paypal button on the client
-  getBuynowSettings: () ->
+  getExpressCheckoutSettings: () ->
 
   	settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
 
-  	buynowSettings = {
+  	expressCheckoutSettings = {
   		merchant_id: settings.merchant_id
   		mode: settings.buynow_mode
   		enabled: settings.buynow_enabled
     }
 
-  	return buynowSettings
+  	return expressCheckoutSettings
