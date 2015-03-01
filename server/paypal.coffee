@@ -11,7 +11,11 @@ Meteor.startup ->
 Meteor.methods
   #submit (sale, authorize)
   paypalSubmit: (transactionType, cardData, paymentData) ->
-    PayFlow.configure Meteor.Paypal.accountOptions()
+    check transactionType, String
+    check cardData, Object
+    check paymentData, Object
+
+    PayFlow.configure Meteor.Paypal.payflowAccountOptions()
     paymentObj = Meteor.Paypal.paymentObj()
     paymentObj.intent = transactionType
     paymentObj.payer.funding_instruments.push Meteor.Paypal.parseCardData(cardData)
@@ -38,7 +42,10 @@ Meteor.methods
 
   # capture (existing authorization)
   paypalCapture: (transactionId, captureDetails) ->
-    PayFlow.configure Meteor.Paypal.accountOptions()
+    check transactionId, String
+    check captureDetails, Object
+
+    PayFlow.configure Meteor.Paypal.payflowAccountOptions()
 
     fut = new Future()
     @unblock()
@@ -58,6 +65,29 @@ Meteor.methods
     )
     fut.wait()
 
+  expressCheckoutPay: (amount, description, currency) ->
+    check amount, String
+    check description, String
+    check currency, String
+
+    options = Meteor.Paypal.expressCheckoutAccountOptions()
+
+    PayPalCheckout.init(options.username, options.password, options.signature, options.return_url, options.cancel_url);
+    invoiceNumber = "214325325"
+    fut = new Future()
+    @unblock()
+    PayPalCheckout.pay invoiceNumber, amount, description, currency, (error, url) ->
+      if error
+        fut.return
+          saved: false
+          error: error
+      else
+        fut.return
+          saved: true
+          url: url
+    fut.wait()
+
+
   # used by pay with paypal button on the client
   getExpressCheckoutSettings: () ->
 
@@ -65,8 +95,20 @@ Meteor.methods
 
   	expressCheckoutSettings = {
   		merchant_id: settings.merchant_id
-  		mode: settings.buynow_mode
-  		enabled: settings.buynow_enabled
+  		mode: settings.express_mode
+  		enabled: settings.express_enabled
     }
 
   	return expressCheckoutSettings
+
+  # used by pay with paypal button on the client
+  getPayflowSettings: () ->
+
+  	settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+
+  	payflowSettings = {
+  		mode: settings.payflow_mode
+  		enabled: settings.payflow_enabled
+    }
+
+  	return payflowSettings

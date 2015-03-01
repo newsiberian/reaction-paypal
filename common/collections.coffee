@@ -10,13 +10,19 @@
 ReactionCore.Schemas.PaypalPackageConfig = new SimpleSchema([
   ReactionCore.Schemas.PackageConfig
   {
-    "settings.buynow_enabled":
+    "settings.express_enabled":
       type: Boolean
       defaultValue: true
-    "settings.merchant_id":
+    "settings.username":
       type: String
-      label: "Merchant ID"
-    "settings.buynow_mode":
+      label: "Username"
+    "settings.password":
+      type: String
+      label: "Password"
+    "settings.signature":
+      type: String
+      label: "Signature"
+    "settings.express_mode":
       type: Boolean
       defaultValue: false
     "settings.payflow_enabled":

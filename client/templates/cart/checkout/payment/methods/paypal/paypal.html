@@ -3,59 +3,63 @@
     {{> expressCheckoutButton}}
   {{/if}}
 
-  {{#autoForm schema="ReactionCore.Schemas.PaypalPayment" id="paypal-payment-form"}}
-  <div class="row">
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
-        <label class="control-label">{{afFieldLabelText name='payerName'}}</label>
-        {{>afFieldInput name="payerName" value=cartPayerName}}
-        {{#if afFieldIsInvalid name="payerName"}}
-        <span class="help-block">{{afFieldMessage name="payerName"}}</span>
-        {{/if}}
+  {{#if payflowEnabled}}
+    {{#autoForm schema="ReactionCore.Schemas.PaypalPayment" id="paypal-payment-form"}}
+    <div class="row">
+      <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name='payerName'}}</label>
+          {{>afFieldInput name="payerName" value=cartPayerName}}
+          {{#if afFieldIsInvalid name="payerName"}}
+          <span class="help-block">{{afFieldMessage name="payerName"}}</span>
+          {{/if}}
+      </div>
+
+      <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='cardNumber'}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name='cardNumber'}}</label>
+          {{>afFieldInput name="cardNumber" placeholder='XXXX XXXX XXXX XXXX'}}
+          {{#if afFieldIsInvalid name="cardNumber"}}
+          <span class="help-block">{{afFieldMessage name="cardNumber"}}</span>
+          {{/if}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireMonth'}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name='expireMonth'}}</label>
+          {{>afFieldInput name="expireMonth" options=monthOptions firstOption=false placeholder="Exp. Month"}}
+          {{#if afFieldIsInvalid name="expireMonth"}}
+          <span class="help-block">{{afFieldMessage name="expireMonth"}}</span>
+          {{/if}}
+      </div>
+
+      <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireYear'}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name='expireYear'}}</label>
+          {{>afFieldInput name="expireYear" options=yearOptions firstOption=false placeholder="Exp. Year"}}
+          {{#if afFieldIsInvalid name="expireYear"}}
+          <span class="help-block">{{afFieldMessage name="expireYear"}}</span>
+          {{/if}}
+      </div>
+
+      <div class="col-sm-12 col-lg-3 form-group{{#if afFieldIsInvalid name='cvv'}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name='cvv'}}</label>
+          {{>afFieldInput name="cvv" placeholder="CVV"}}
+          {{#if afFieldIsInvalid name="cvv"}}
+          <span class="help-block">{{afFieldMessage name="cvv"}}</span>
+          {{/if}}
+      </div>
     </div>
 
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='cardNumber'}} has-error{{/if}}">
-        <label class="control-label">{{afFieldLabelText name='cardNumber'}}</label>
-        {{>afFieldInput name="cardNumber" placeholder='XXXX XXXX XXXX XXXX'}}
-        {{#if afFieldIsInvalid name="cardNumber"}}
-        <span class="help-block">{{afFieldMessage name="cardNumber"}}</span>
-        {{/if}}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireMonth'}} has-error{{/if}}">
-        <label class="control-label">{{afFieldLabelText name='expireMonth'}}</label>
-        {{>afFieldInput name="expireMonth" options=monthOptions firstOption=false placeholder="Exp. Month"}}
-        {{#if afFieldIsInvalid name="expireMonth"}}
-        <span class="help-block">{{afFieldMessage name="expireMonth"}}</span>
-        {{/if}}
-    </div>
+    <div class="alert alert-danger hidden">Oh! Snap!</div>
+    <button type="submit" class="btn btn-lg btn-success btn-block btn-complete-order">
+      <span id="btn-complete-order">Complete your order</span>
+      <i class="fa fa-spinner fa-spin hidden" id="btn-processing"></i>
+    </button>
 
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireYear'}} has-error{{/if}}">
-        <label class="control-label">{{afFieldLabelText name='expireYear'}}</label>
-        {{>afFieldInput name="expireYear" options=yearOptions firstOption=false placeholder="Exp. Year"}}
-        {{#if afFieldIsInvalid name="expireYear"}}
-        <span class="help-block">{{afFieldMessage name="expireYear"}}</span>
-        {{/if}}
-    </div>
-
-    <div class="col-sm-12 col-lg-3 form-group{{#if afFieldIsInvalid name='cvv'}} has-error{{/if}}">
-        <label class="control-label">{{afFieldLabelText name='cvv'}}</label>
-        {{>afFieldInput name="cvv" placeholder="CVV"}}
-        {{#if afFieldIsInvalid name="cvv"}}
-        <span class="help-block">{{afFieldMessage name="cvv"}}</span>
-        {{/if}}
-    </div>
-  </div>
-
-  <div class="alert alert-danger hidden">Oh! Snap!</div>
-  <button type="submit" class="btn btn-lg btn-success btn-block btn-complete-order">
-    <span id="btn-complete-order">Complete your order</span>
-    <i class="fa fa-spinner fa-spin hidden" id="btn-processing"></i>
-  </button>
-
-  {{/autoForm}}
+    {{/autoForm}}
+  {{/if}}
 </template>
 
 <template name="expressCheckoutButton">
-  <img src="https://www.paypal.com/en_US/i/logo/PayPal_mark_37x23.gif" align="left" style="margin-right:7px;"><span style="font-size:11px; font-family: Arial, Verdana;">The safer, easier way to pay.</span>
+  <a href="#" id="test">
+    <img src="https://www.paypal.com/en_US/i/logo/PayPal_mark_37x23.gif" align="left" style="margin-right:7px;"><span style="font-size:11px; font-family: Arial, Verdana;">The safer, easier way to pay.</span>
+  </a>
 </template>
