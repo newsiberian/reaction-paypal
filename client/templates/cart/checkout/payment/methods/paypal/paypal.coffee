@@ -41,7 +41,8 @@ Template.expressCheckoutButton.events
   'click #test': (event) ->
     Meteor.call "expressCheckoutPay", '10', 'test', 'USD', (error, url) ->
       console.log error, url
-      #  window.location.href url
+      # redirect user to paypal flow on success
+      # window.location.href url
 
 # used to track asynchronous submitting for UI changes
 submitting = false

@@ -73,7 +73,7 @@ Meteor.methods
     options = Meteor.Paypal.expressCheckoutAccountOptions()
 
     PayPalCheckout.init(options.username, options.password, options.signature, options.return_url, options.cancel_url);
-    invoiceNumber = "214325325"
+    invoiceNumber = "214325325" # what number should be used here?
     fut = new Future()
     @unblock()
     PayPalCheckout.pay invoiceNumber, amount, description, currency, (error, url) ->
@@ -86,7 +86,6 @@ Meteor.methods
           saved: true
           url: url
     fut.wait()
-
 
   # used by pay with paypal button on the client
   getExpressCheckoutSettings: () ->
