@@ -1,9 +1,12 @@
 <template name="paypalPaymentForm">
   {{#if expressCheckoutEnabled}}
+    <div class="clearfix checkout-button">
     {{> expressCheckoutButton}}
+    </div>
   {{/if}}
 
   {{#if payflowEnabled}}
+    <div class="clearfix">
     {{#autoForm schema="ReactionCore.Schemas.PaypalPayment" id="paypal-payment-form"}}
     <div class="row">
       <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
@@ -55,6 +58,7 @@
     </button>
 
     {{/autoForm}}
+    </div>
   {{/if}}
 </template>
 
