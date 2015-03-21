@@ -40,7 +40,7 @@ Template.paypalPaymentForm.created = () ->
 Template.expressCheckoutButton.events
   'click #test': (event) ->
     Meteor.call "expressCheckoutPay", '10', 'test', 'USD', (error, url) ->
-      console.log error, url
+      console.log error, url if error
       # redirect user to paypal flow on success
       # window.location.href url
 
