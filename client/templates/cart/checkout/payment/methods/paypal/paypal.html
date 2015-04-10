@@ -1,8 +1,10 @@
+<head>
+<script async src="//www.paypalobjects.com/api/checkout.js"></script>
+</head>
+
 <template name="paypalPaymentForm">
   {{#if expressCheckoutEnabled}}
-    <div class="clearfix checkout-button">
-    {{> expressCheckoutButton}}
-    </div>
+    {{> paypalCheckoutButton}}
   {{/if}}
 
   {{#if payflowEnabled}}
@@ -62,8 +64,6 @@
   {{/if}}
 </template>
 
-<template name="expressCheckoutButton">
-  <a href="#" id="test">
-    <img src="https://www.paypal.com/en_US/i/logo/PayPal_mark_37x23.gif" align="left" style="margin-right:7px;"><span style="font-size:11px; font-family: Arial, Verdana;">The safer, easier way to pay.</span>
-  </a>
+<template name="paypalCheckoutButton">
+  <div class="paypal-checkout-button-container"></div>
 </template>

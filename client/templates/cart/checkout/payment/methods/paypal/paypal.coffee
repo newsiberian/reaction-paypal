@@ -37,13 +37,6 @@ Template.paypalPaymentForm.created = () ->
   Meteor.call "getPayflowSettings", (error, payflowSettings) ->
     Session.set 'payflowSettings', payflowSettings unless error
 
-Template.expressCheckoutButton.events
-  'click #test': (event) ->
-    Meteor.call "expressCheckoutPay", '10', 'test', 'USD', (error, url) ->
-      console.log error, url if error
-      # redirect user to paypal flow on success
-      # window.location.href url
-
 # used to track asynchronous submitting for UI changes
 submitting = false
 
@@ -141,3 +134,6 @@ AutoForm.addHooks "paypal-payment-form",
   endSubmit: (formId, template) ->
     # Hide processing UI here if form was not valid
     uiEnd(template, "Complete your order") if not submitting
+
+Template.paypalCheckoutButton.rendered = ->
+  Meteor.Paypal.initExpress this.$('.paypal-checkout-button-container')[0]

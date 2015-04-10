@@ -1,8 +1,5 @@
 {
   "dependencies": {
-    "paypal-express-checkout": {
-      "version": "1.0.2"
-    },
     "paypal-rest-sdk": {
       "version": "1.5.0",
       "dependencies": {

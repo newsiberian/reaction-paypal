@@ -7,15 +7,15 @@ Package.describe({
 });
 
 Npm.depends({
-  'paypal-rest-sdk': '1.5.0',
-  'paypal-express-checkout': '1.0.2'
-  });
+  'paypal-rest-sdk': '1.5.0'
+});
 
 Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');
   api.use("meteor-platform@1.2.1");
   api.use("coffeescript");
   api.use("less");
+  api.use("http");
   api.use("reactioncommerce:core@0.5.0");
 
   api.addFiles("server/register.coffee",["server"]); // register as a reaction package
@@ -28,6 +28,7 @@ Package.onUse(function (api, where) {
   ],["client","server"]);
 
   api.addFiles([
+    "client/init.coffee",
     "client/templates/paypal.html",
     "client/templates/paypal.less",
     "client/templates/paypal.coffee",

@@ -1,7 +1,7 @@
 Meteor.Paypal =
   payflowAccountOptions: ->
     settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
-    if settings?.mode is true then mode = "live" else mode = "sandbox"
+    if settings?.payflow_mode is true then mode = "live" else mode = "sandbox"
     options =
       mode: mode
       client_id: settings?.client_id || Meteor.settings.paypal.client_id
@@ -10,12 +10,15 @@ Meteor.Paypal =
 
   expressCheckoutAccountOptions: ->
     settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+    if settings?.express_mode is true then mode = "production" else mode = "sandbox"
     options =
+      mode: mode
       username: settings?.username || Meteor.settings.paypal.username
       password: settings?.password || Meteor.settings.paypal.password
       signature: settings?.signature || Meteor.settings.paypal.signature
-      return_url: "test"
-      cancel_url: "test"
+      return_url: Meteor.absoluteUrl 'paypal/done'
+      cancel_url: Meteor.absoluteUrl 'paypal/cancel'
+
     return options
 
   #authorize submits a payment authorization to Paypal
