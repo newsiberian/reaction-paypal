@@ -2,7 +2,7 @@ Router.map ->
   @route 'paypal',
     controller: ShopAdminController
     path: '/dashboard/settings/paypal'
-    template: 'paypal'
+    template: 'paypalSettings'
     waitOn: ->
       return ReactionCore.Subscriptions.Packages
 

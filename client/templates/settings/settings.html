@@ -1,10 +1,10 @@
-<template name="paypal">
-<div class="row">
-  <h2>PayPal <small data-18n="app.settings">Settings</small></h2>
-</div>
-<div class="row">
-  <div class="col-md-6 well">
-    {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.PaypalPackageConfig" doc=packageData type="update" id="paypal-update-form"}}
+<template name="paypalSettings">
+  <div class="row">
+    <h2>PayPal <small data-18n="app.settings">Settings</small></h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6 well">
+      {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.PaypalPackageConfig" doc=packageData type="update" id="paypal-update-form"}}
       <h3>Pay with PayPal button</h3>
       <div class="form-group">
         Don't have a PayPal username, password and signature? <a href="https://developer.paypal.com/webapps/developer/applications/accounts" target="_blank">Get one here.</a>
@@ -23,7 +23,7 @@
       {{>afQuickField name='settings.client_secret' type="password"}}
       {{>afQuickField name='settings.payflow_mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode" style="width: auto"}}
       <button type="submit" class="btn btn-primary pull-right">Update</button>
-    {{/autoForm}}
+      {{/autoForm}}
+    </div>
   </div>
-</div>
 </template>

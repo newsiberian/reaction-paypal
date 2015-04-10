@@ -1,4 +1,4 @@
-Template.paypal.helpers
+Template.paypalSettings.helpers
   packageData: ->
     return ReactionCore.Collections.Packages.findOne({name:"reaction-paypal"})
 

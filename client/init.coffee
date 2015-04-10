@@ -15,7 +15,7 @@ doSetup = ->
         shop = ReactionCore.Collections.Shops.findOne()
         cart = ReactionCore.Collections.Cart.findOne()
 
-        Meteor.call "expressCheckoutPay", Number(cart.cartTotal()), shop.name, shop.currency, (error, token) ->
+        Meteor.call "getExpressCheckoutToken", Number(cart.cartTotal()), shop.name, shop.currency, (error, token) ->
           if error
             console.log error
             paypal.checkout.closeFlow()

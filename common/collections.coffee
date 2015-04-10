@@ -4,15 +4,22 @@ ReactionCore.Schemas.PaypalPackageConfig = new SimpleSchema([
     "settings.express_enabled":
       type: Boolean
       defaultValue: true
+    "settings.merchantId":
+      type: String
+      label: "Merchant ID"
+      optional: true
     "settings.username":
       type: String
       label: "Username"
+      optional: true
     "settings.password":
       type: String
       label: "Password"
+      optional: true
     "settings.signature":
       type: String
       label: "Signature"
+      optional: true
     "settings.express_mode":
       type: Boolean
       defaultValue: false
@@ -23,10 +30,12 @@ ReactionCore.Schemas.PaypalPackageConfig = new SimpleSchema([
       type: String
       label: "API Client ID"
       min: 60
+      optional: true
     "settings.client_secret":
       type: String
       label: "API Secret"
       min: 60
+      optional: true
     "settings.payflow_mode":
       type: Boolean
       defaultValue: false

@@ -18,23 +18,30 @@ Package.onUse(function (api, where) {
   api.use("http");
   api.use("reactioncommerce:core@0.5.0");
 
-  api.addFiles("server/register.coffee",["server"]); // register as a reaction package
-  api.addFiles("server/paypal.coffee",["server"]);
+  api.addFiles([
+    "server/register.coffee", // register as a reaction package
+    "server/browserPolicy.coffee", // set browser policy to allow PayPal scripts and images
+    "server/methods/express.coffee", // server methods for express checkout
+    "server/methods/payflow.coffee" // server methods for payflow
+  ], "server");
 
   api.addFiles([
     "common/collections.coffee",
     "common/routing.coffee",
     "lib/paypal.coffee"
-  ],["client","server"]);
+  ], ["client", "server"]);
 
   api.addFiles([
     "client/init.coffee",
-    "client/templates/paypal.html",
     "client/templates/paypal.less",
-    "client/templates/paypal.coffee",
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.html",
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.coffee"
-  ],
-  ["client"]);
+    "client/templates/settings/settings.html",
+    "client/templates/settings/settings.coffee",
+    "client/templates/checkout/checkoutButton.html",
+    "client/templates/checkout/checkoutButton.coffee",
+    "client/templates/checkout/payflowForm.html",
+    "client/templates/checkout/payflowForm.coffee",
+    "client/templates/checkout/paymentForm.html",
+    "client/templates/checkout/paymentForm.coffee"
+  ], "client");
 
 });

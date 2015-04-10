@@ -1,0 +1,9 @@
+<template name="paypalPaymentForm">
+  {{#if expressCheckoutEnabled}}
+    {{> paypalCheckoutButton}}
+  {{/if}}
+
+  {{#if payflowEnabled}}
+    {{> paypalPayflowForm}}
+  {{/if}}
+</template>
