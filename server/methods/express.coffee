@@ -2,26 +2,32 @@
 
 Meteor.methods
 
-  getExpressCheckoutToken: (amount, description, currency) ->
-    check amount, Number
-    check description, String
-    check currency, String
-
-    options = Meteor.Paypal.expressCheckoutAccountOptions()
+  # This is called upon clicking the PayPal express checkout
+  # button, and the resulting token must be passed to the
+  # PayPal in-context checkout script.
+  getExpressCheckoutToken: (cartId) ->
+    check cartId, String
 
     @unblock()
 
-    if options.mode is 'sandbox'
-      url = 'https://api-3t.sandbox.paypal.com/nvp'
-      redirect = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
-    else
-      url = 'https://api-3t.paypal.com/nvp'
-      redirect = 'https://www.paypal.com/cgi-bin/webscr'
+    cart = ReactionCore.Collections.Cart.findOne cartId
 
-    invoiceNumber = "214325325" # what number should be used here?
+    unless cart
+      throw new Meteor.Error 'Bad cart ID'
+
+    shop = ReactionCore.Collections.Shops.findOne cart.shopId
+
+    unless shop
+      throw new Meteor.Error 'Bad shop ID'
+
+    amount = Number(cart.cartTotal())
+    description = "#{shop.name} Ref: #{cartId}"
+    currency = shop.currency
+
+    options = Meteor.Paypal.expressCheckoutAccountOptions()
 
     try
-      response = HTTP.post url,
+      response = HTTP.post options.url,
         params:
           USER: options.username,
           PWD: options.password,
@@ -37,8 +43,8 @@ Meteor.methods
           ALLOWNOTE: 1
           CURRENCYCODE: currency
           METHOD: 'SetExpressCheckout'
-          INVNUM: invoiceNumber
-          CUSTOM: invoiceNumber + '|' + amount + '|' + currency
+          INVNUM: cartId
+          CUSTOM: cartId + '|' + amount + '|' + currency
     catch error
       throw new Meteor.Error(error.message)
 
@@ -52,15 +58,59 @@ Meteor.methods
 
     return response.TOKEN
 
+  # After the PayPal in-context checkout flow redirects to the
+  # return URL, we call this with the token and payerId it
+  # provides. Here we confirm the authorization.
+  confirmPaymentAuthorization: (cartId, token, payerId) ->
+    check cartId, String
+    check token, String
+    check payerId, String
+
+    @unblock()
+
+    cart = ReactionCore.Collections.Cart.findOne cartId
+
+    unless cart
+      throw new Meteor.Error 'Bad cart ID'
+
+    amount = Number(cart.cartTotal())
+
+    options = Meteor.Paypal.expressCheckoutAccountOptions()
+
+    try
+      response = HTTP.post options.url,
+        params:
+          USER: options.username,
+          PWD: options.password,
+          SIGNATURE: options.signature,
+          VERSION: '52.0'
+          PAYMENTACTION: 'Authorization'
+          AMT: amount
+          METHOD: 'DoExpressCheckoutPayment'
+          TOKEN: token
+          PAYERID: payerId
+    catch error
+      throw new Meteor.Error(error.message)
+
+    if !response or response.statusCode isnt 200
+      throw new Meteor.Error('Bad response from PayPal')
+
+    response = parseResponse response
+
+    if response.ACK isnt 'Success'
+      throw new Meteor.Error('ACK ' + response.ACK + ': ' + response.L_LONGMESSAGE0)
+
+    return response
+
   # used by pay with paypal button on the client
   getExpressCheckoutSettings: () ->
 
-  	settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+  	settings = Meteor.Paypal.expressCheckoutAccountOptions()
 
   	expressCheckoutSettings =
-      merchant_id: settings.merchant_id
-      mode: settings.express_mode
-      enabled: settings.express_enabled
+      merchantId: settings.merchantId
+      mode: settings.mode
+      enabled: settings.enabled
 
   	return expressCheckoutSettings
 

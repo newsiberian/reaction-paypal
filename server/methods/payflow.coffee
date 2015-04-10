@@ -7,13 +7,13 @@ Meteor.methods
     check cardData, Object
     check paymentData, Object
 
+    @unblock()
+
     PayFlow.configure Meteor.Paypal.payflowAccountOptions()
     paymentObj = Meteor.Paypal.paymentObj()
     paymentObj.intent = transactionType
     paymentObj.payer.funding_instruments.push Meteor.Paypal.parseCardData(cardData)
     paymentObj.transactions.push Meteor.Paypal.parsePaymentData(paymentData)
-
-    @unblock()
 
     wrappedFunc = Meteor.wrapAsync(PayFlow.payment.create, PayFlow.payment)
 
@@ -29,14 +29,14 @@ Meteor.methods
 
     return result
 
-  # capture (existing authorization)
+  # Capture details of existing auth
   paypalCapture: (transactionId, captureDetails) ->
     check transactionId, String
     check captureDetails, Object
 
-    PayFlow.configure Meteor.Paypal.payflowAccountOptions()
-
     @unblock()
+
+    PayFlow.configure Meteor.Paypal.payflowAccountOptions()
 
     wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization)
 
@@ -52,10 +52,10 @@ Meteor.methods
 
     return result
 
-  # used by pay with paypal button on the client
+  # For client to know whether payflow form should be shown
   getPayflowSettings: () ->
 
-  	settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+  	settings = Meteor.Paypal.payflowAccountOptions()
 
   	payflowSettings =
       mode: settings.payflow_mode

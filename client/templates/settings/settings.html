@@ -10,6 +10,7 @@
         Don't have a PayPal username, password and signature? <a href="https://developer.paypal.com/webapps/developer/applications/accounts" target="_blank">Get one here.</a>
       </div>
       {{>afQuickField name='settings.express_enabled' type="boolean-select" trueLabel="Enabled" falseLabel="Disabled" style="width: auto"}}
+      {{>afQuickField name='settings.merchantId'}}
       {{>afQuickField name='settings.username'}}
       {{>afQuickField name='settings.password' type="password"}}
       {{>afQuickField name='settings.signature'}}

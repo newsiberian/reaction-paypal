@@ -31,7 +31,6 @@ Package.onUse(function (api, where) {
   ], ["client", "server"]);
 
   api.addFiles([
-    "client/init.coffee",
     "client/templates/paypal.less",
     "client/templates/settings/settings.html",
     "client/templates/settings/settings.coffee",
