@@ -9,10 +9,11 @@ doSetup = ->
     # need to be re-added
     paypal.checkout.setup expressCheckoutSettings.merchantId,
       environment: expressCheckoutSettings.mode
-      locale: ReactionCore.Locale.language.replace('-', '_')
+      # TODO: convert user locale to https://developer.paypal.com/docs/classic/api/locale_codes/
+      # locale: ReactionCore.Locale.language.replace('-', '_')
       container: containerElement
       click: ->
-        paypal.checkout.initXO();
+        paypal.checkout.initXO()
 
         cart = ReactionCore.Collections.Cart.findOne()
 

@@ -4,8 +4,9 @@ Meteor.Paypal =
     if settings?.payflow_mode is true then mode = "live" else mode = "sandbox"
     options =
       mode: mode
-      client_id: settings?.client_id || Meteor.settings.paypal.client_id
-      client_secret: settings?.client_secret || Meteor.settings.paypal.client_secret
+      enabled: settings?.payflow_enabled || Meteor.settings.paypal?.payflow_enabled
+      client_id: settings?.client_id || Meteor.settings.paypal?.client_id
+      client_secret: settings?.client_secret || Meteor.settings.paypal?.client_secret
     return options
 
   expressCheckoutAccountOptions: ->

@@ -1,5 +1,5 @@
 # PAYFLOW SERVER METHODS
-
+PayFlow = Npm.require("paypal-rest-sdk")
 Meteor.methods
   #submit (sale, authorize)
   paypalSubmit: (transactionType, cardData, paymentData) ->
@@ -54,11 +54,10 @@ Meteor.methods
 
   # For client to know whether payflow form should be shown
   getPayflowSettings: () ->
+    settings = Meteor.Paypal.payflowAccountOptions()
 
-  	settings = Meteor.Paypal.payflowAccountOptions()
+    payflowSettings =
+      mode: settings.mode
+      enabled: settings.enabled
 
-  	payflowSettings =
-      mode: settings.payflow_mode
-      enabled: settings.payflow_enabled
-
-  	return payflowSettings
+    return payflowSettings
