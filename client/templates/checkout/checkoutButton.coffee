@@ -16,10 +16,12 @@ doSetup = ->
         paypal.checkout.initXO()
 
         cart = ReactionCore.Collections.Cart.findOne()
+        unless cart then return
 
         Meteor.call "getExpressCheckoutToken", cart._id, (error, token) ->
           if error
-            console.log error
+            msg = error?.error || i18n.t("checkoutPayment.processingError", "There was a problem with your payment.")
+            Alerts.add msg, "danger", placement:"paymentMethod"
             paypal.checkout.closeFlow()
           else
             url = paypal.checkout.urlPrefix + token;

@@ -72,6 +72,7 @@ Meteor.methods
 
     unless cart
       throw new Meteor.Error 'Bad cart ID'
+      return
 
     amount = Number(cart.cartTotal())
 
@@ -92,11 +93,13 @@ Meteor.methods
     catch error
       throw new Meteor.Error(error.message)
 
+    # invalid response
     if !response or response.statusCode isnt 200
       throw new Meteor.Error('Bad response from PayPal')
 
     response = parseResponse response
 
+    # error catch all
     if response.ACK isnt 'Success'
       throw new Meteor.Error('ACK ' + response.ACK + ': ' + response.L_LONGMESSAGE0)
 
