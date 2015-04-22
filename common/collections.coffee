@@ -1,26 +1,44 @@
-###
-#  Meteor.settings.paypal =
-#    mode: false  #sandbox
-#    client_id: ""
-#    client_secret: ""
-#  see: https://developer.paypal.com/webapps/developer/docs/api/
-#  see: https://github.com/paypal/rest-api-sdk-nodejs
-###
-
 ReactionCore.Schemas.PaypalPackageConfig = new SimpleSchema([
   ReactionCore.Schemas.PackageConfig
   {
-    "settings.mode":
+    "settings.express_enabled":
+      type: Boolean
+      defaultValue: true
+    "settings.merchantId":
+      type: String
+      label: "Merchant ID"
+      optional: true
+    "settings.username":
+      type: String
+      label: "Username"
+      optional: true
+    "settings.password":
+      type: String
+      label: "Password"
+      optional: true
+    "settings.signature":
+      type: String
+      label: "Signature"
+      optional: true
+    "settings.express_mode":
       type: Boolean
       defaultValue: false
+    "settings.payflow_enabled":
+      type: Boolean
+      defaultValue: true
     "settings.client_id":
       type: String
       label: "API Client ID"
       min: 60
+      optional: true
     "settings.client_secret":
       type: String
       label: "API Secret"
       min: 60
+      optional: true
+    "settings.payflow_mode":
+      type: Boolean
+      defaultValue: false
   }
 ])
 
@@ -28,7 +46,7 @@ ReactionCore.Schemas.PaypalPayment = new SimpleSchema
   payerName:
     type: String
     label: "Cardholder name",
-    regEx: /^\w+\s\w+$/
+    regEx: /[A-Z][a-zA-Z]*/
   cardNumber:
     type: String
     min: 16
