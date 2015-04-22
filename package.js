@@ -1,36 +1,45 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "0.4.0",
-  git: "https://github.com/reactioncommerce/reaction-paypal.git",
-  icon: 'fa fa-paypal'
+  version: "0.6.0",
+  git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
-Npm.depends({'paypal-rest-sdk': '1.2.2'});
+Npm.depends({
+  'paypal-rest-sdk': '1.5.2'
+});
 
 Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');
-  api.use("meteor-platform@1.2.1");
+  api.use("meteor-platform@1.2.2");
   api.use("coffeescript");
   api.use("less");
-  api.use("reactioncommerce:core@0.4.1");
-
-  api.addFiles("server/register.coffee",["server"]); // register as a reaction package
-  api.addFiles("server/paypal.coffee",["server"]);
+  api.use("http");
+  api.use("reactioncommerce:core@0.5.7");
 
   api.addFiles([
-    "common/routing.coffee",
+    "server/register.coffee", // register as a reaction package
+    "server/browserPolicy.coffee", // set browser policy to allow PayPal scripts and images
+    "server/methods/express.coffee", // server methods for express checkout
+    "server/methods/payflow.coffee" // server methods for payflow
+  ], "server");
+
+  api.addFiles([
     "common/collections.coffee",
+    "common/routing.coffee",
     "lib/paypal.coffee"
-  ],["client","server"]);
+  ], ["client", "server"]);
 
   api.addFiles([
-    "client/templates/paypal.html",
     "client/templates/paypal.less",
-    "client/templates/paypal.coffee",
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.html",
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.coffee"
-  ],
-  ["client"]);
+    "client/templates/settings/settings.html",
+    "client/templates/settings/settings.coffee",
+    "client/templates/checkout/checkoutButton.html",
+    "client/templates/checkout/checkoutButton.coffee",
+    "client/templates/checkout/payflowForm.html",
+    "client/templates/checkout/payflowForm.coffee",
+    "client/templates/checkout/paymentForm.html",
+    "client/templates/checkout/paymentForm.coffee"
+  ], "client");
 
 });

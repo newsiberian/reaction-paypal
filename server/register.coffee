@@ -1,10 +1,6 @@
 ReactionCore.registerPackage
   name: 'reaction-paypal' # usually same as meteor package
   autoEnable: false # auto-enable in dashboard
-  settings: # private package settings config (blackbox)
-    mode: false
-    client_id: ''
-    client_secret: ''
   registry: [
     # all options except route and template
     # are used to describe the
