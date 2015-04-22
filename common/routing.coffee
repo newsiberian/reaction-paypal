@@ -9,7 +9,12 @@ Router.map ->
   # Express checkout return url
   @route 'paypalExpressReturn',
     path: '/paypal/done'
-    action: ->
+    yieldTemplates:
+      checkoutHeader:
+        to: "layoutHeader"
+    # onBeforeAction: ->
+    #   Session.setDefault "expressToken", undefined
+    onBeforeAction: ->
       # TODO Use token to get info about the user and store it for later charging
       # and then continue to order completed screen
       payerId = @params.query.PayerID
@@ -21,10 +26,12 @@ Router.map ->
       if sessionToken isnt token
         Session.set "expressToken", token
         Meteor.call 'confirmPaymentAuthorization', cart._id, token, payerId, (error, result) ->
+          # console.log "confirmPaymentAuthorization", token
           if error
             msg = error?.error || i18n.t("checkoutPayment.processingError", "There was a problem with your payment.")
             Alerts.add msg, "danger", placement:"paymentMethod"
-            console.log error.error
+            if error?.details?.L_ERRORCODE0 is '10415'
+              Router.go 'cartCompleted', _id: cart._id
             return
 
           # Format the transaction to store with order and submit to CartWorkflow
@@ -45,7 +52,12 @@ Router.map ->
           # CartWorkflow.paymentAuth() which
           # will create order, clear the cart, and update inventory,
           # and goto order confirmation page
-          CartWorkflow.paymentMethod(paymentMethod)
+          try
+            CartWorkflow.paymentMethod(paymentMethod)
+          catch e
+            # console.log "paymentMethod error", e
+            Session.set "guestCheckoutFlow", true
+            Router.go "cartCheckout"
           return
 
       @render('loading')
@@ -55,4 +67,5 @@ Router.map ->
   @route 'paypalExpressCancel',
     path: '/paypal/cancel'
     action: ->
+      Session.set "guestCheckoutFlow", true
       @redirect '/checkout'

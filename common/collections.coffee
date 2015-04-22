@@ -46,7 +46,7 @@ ReactionCore.Schemas.PaypalPayment = new SimpleSchema
   payerName:
     type: String
     label: "Cardholder name",
-    regEx: /^\w+\s\w+$/
+    regEx: /[A-Z][a-zA-Z]*/
   cardNumber:
     type: String
     min: 16
