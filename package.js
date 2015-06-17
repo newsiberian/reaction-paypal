@@ -1,21 +1,21 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "0.6.0",
+  version: "0.7.0",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
 Npm.depends({
-  'paypal-rest-sdk': '1.5.2'
+  'paypal-rest-sdk': '1.5.3'
 });
 
 Package.onUse(function (api, where) {
-  api.versionsFrom('METEOR@1.0');
-  api.use("meteor-platform@1.2.2");
+  api.versionsFrom('METEOR@1.1.0.2');
+  api.use("meteor-platform");
   api.use("coffeescript");
   api.use("less");
   api.use("http");
-  api.use("reactioncommerce:core@0.5.7");
+  api.use("reactioncommerce:core@0.6.0");
 
   api.addFiles([
     "server/register.coffee", // register as a reaction package

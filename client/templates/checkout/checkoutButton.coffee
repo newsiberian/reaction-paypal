@@ -35,6 +35,6 @@ Tracker.autorun () ->
   expressCheckoutSettings = Session.get 'expressCheckoutSettings'
   doSetup()
 
-Template.paypalCheckoutButton.rendered = ->
+Template.paypalCheckoutButton.onRendered ->
   containerElement = this.$('.paypal-checkout-button-container')[0]
   doSetup()

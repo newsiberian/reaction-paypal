@@ -1,4 +1,4 @@
-Template.paypalPaymentForm.created = () ->
+Template.paypalPaymentForm.onCreated ->
   Meteor.call "getExpressCheckoutSettings", (error, expressCheckoutSettings) ->
     Session.set 'expressCheckoutSettings', expressCheckoutSettings unless error
   Meteor.call "getPayflowSettings", (error, payflowSettings) ->
