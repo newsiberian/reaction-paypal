@@ -111,12 +111,12 @@ AutoForm.addHooks "paypal-payment-form",
 
     return false;
 
-  beginSubmit: (formId, template) ->
+  beginSubmit: () ->
     # Show Processing
-    template.$(".cart-checkout-step *").attr("disabled", true)
-    template.$("#btn-complete-order").text("Submitting ")
-    template.$("#btn-processing").removeClass("hidden")
+    this.template.$(".cart-checkout-step *").attr("disabled", true)
+    this.template.$("#btn-complete-order").text("Submitting ")
+    this.template.$("#btn-processing").removeClass("hidden")
 
-  endSubmit: (formId, template) ->
+  endSubmit: () ->
     # Hide processing UI here if form was not valid
-    uiEnd(template, "Complete your order") if not submitting
+    uiEnd(this.template, "Complete your order") if not submitting
