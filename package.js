@@ -1,12 +1,12 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "0.7.0",
+  version: "0.8.0",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
 Npm.depends({
-  'paypal-rest-sdk': '1.5.3'
+  'paypal-rest-sdk': '1.6.0'
 });
 
 Package.onUse(function (api, where) {
