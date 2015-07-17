@@ -7,6 +7,7 @@ Meteor.Paypal =
       enabled: settings?.payflow_enabled || Meteor.settings.paypal?.payflow_enabled
       client_id: settings?.client_id || Meteor.settings.paypal?.client_id
       client_secret: settings?.client_secret || Meteor.settings.paypal?.client_secret
+    unless options.client_id then throw new Meteor.Error 403, "Invalid PayPal Credentials"
     return options
 
   expressCheckoutAccountOptions: ->
