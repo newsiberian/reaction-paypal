@@ -1,6 +1,6 @@
 Meteor.Paypal =
   payflowAccountOptions: ->
-    settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+    settings = ReactionCore.Collections.Packages.findOne({name: "reaction-paypal", shopId: ReactionCore.getShopId(), enabled: true}).settings
     if settings?.payflow_mode is true then mode = "live" else mode = "sandbox"
     options =
       mode: mode
@@ -11,7 +11,7 @@ Meteor.Paypal =
     return options
 
   expressCheckoutAccountOptions: ->
-    settings = ReactionCore.Collections.Packages.findOne(name: "reaction-paypal").settings
+    settings = ReactionCore.Collections.Packages.findOne({name: "reaction-paypal", shopId: ReactionCore.getShopId(), enabled: true}).settings
     if settings?.express_mode is true then mode = "production" else mode = "sandbox"
 
     options =
