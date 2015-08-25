@@ -1,4 +1,5 @@
 ReactionCore.registerPackage({
+  label: 'PayPal',
   name: 'reaction-paypal',
   autoEnable: false,
   registry: [
@@ -10,6 +11,8 @@ ReactionCore.registerPackage({
       cycle: '3',
       container: 'reaction-paypal'
     }, {
+      label: 'PayPal Settings',
+      i18nLabel: 'app.paypalSettings',
       route: 'paypal',
       provides: 'settings',
       container: 'reaction-paypal'
@@ -20,7 +23,7 @@ ReactionCore.registerPackage({
   ],
   permissions: [
     {
-      label: 'Pay Pal',
+      label: 'PayPal',
       permission: 'dashboard/payments',
       group: 'Shop Settings'
     }

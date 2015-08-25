@@ -1,6 +1,6 @@
 Router.map(function() {
   this.route('paypal', {
-    controller: ShopAdminController,
+    controller: ShopSettingsController,
     path: '/dashboard/settings/paypal',
     template: 'paypalSettings',
     waitOn: function() {
