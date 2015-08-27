@@ -15,7 +15,8 @@ ReactionCore.registerPackage({
       i18nLabel: 'app.paypalSettings',
       route: 'paypal',
       provides: 'settings',
-      container: 'reaction-paypal'
+      container: 'reaction-paypal',
+      template: 'paypalSettings'
     }, {
       template: 'paypalPaymentForm',
       provides: 'paymentMethod'

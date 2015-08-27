@@ -1,7 +1,7 @@
 <template name="paypalSettings">
   <div class="container-fluid section">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
       
      <div class="panel panel-default">
         <div class="panel-heading">
@@ -9,7 +9,7 @@
         </div>
         <div class="panel-body">
                   {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.PaypalPackageConfig" doc=packageData type="update" id="paypal-update-form"}}
-        <h3>Pay with PayPal button</h3>
+        
         <div class="form-group">
           Don't have a PayPal username, password and signature? <a href="https://developer.paypal.com/webapps/developer/applications/accounts" target="_blank">Get one here.</a>
         </div>
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-12">
       
      <div class="panel panel-default">
         <div class="panel-heading">
