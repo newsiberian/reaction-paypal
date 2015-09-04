@@ -12,7 +12,6 @@ ReactionCore.registerPackage({
       container: 'reaction-paypal'
     }, {
       label: 'PayPal Settings',
-      i18nLabel: 'app.paypalSettings',
       route: 'paypal',
       provides: 'settings',
       container: 'reaction-paypal',
