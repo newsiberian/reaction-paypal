@@ -1,8 +1,8 @@
 Router.map(function() {
   this.route('paypal', {
     controller: ShopSettingsController,
-    path: '/dashboard/settings/paypal',
-    template: 'dashboardPackages',
+    path: '/dashboard/paypal',
+    template: 'paypalDashboard',
     waitOn: function() {
       return ReactionCore.Subscriptions.Packages;
     }

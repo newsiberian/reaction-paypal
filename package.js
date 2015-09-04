@@ -33,6 +33,8 @@ Package.onUse(function (api, where) {
     "client/templates/paypal.less",
     "client/templates/settings/settings.html",
     "client/templates/settings/settings.js",
+    "client/templates/dashboard/dashboard.html",
+    "client/templates/dashboard/dashboard.js",
     "client/templates/checkout/checkoutButton.html",
     "client/templates/checkout/checkoutButton.js",
     "client/templates/checkout/payflowForm.html",
