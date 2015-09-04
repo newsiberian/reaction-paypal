@@ -13,7 +13,6 @@ ReactionCore.registerPackage({
       container: 'reaction-paypal'
     }, {
       label: 'PayPal Settings',
-      i18nLabel: 'app.paypalSettings',
       provides: 'settings',
       container: 'reaction-paypal',
       template: 'paypalSettings'
