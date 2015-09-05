@@ -1,6 +1,7 @@
 ReactionCore.registerPackage({
   label: 'PayPal',
   name: 'reaction-paypal',
+  icon: 'fa fa-paypal',
   autoEnable: false,
   registry: [
     {
