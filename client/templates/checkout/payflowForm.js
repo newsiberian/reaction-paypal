@@ -107,7 +107,9 @@ AutoForm.addHooks("paypal-payment-form", {
             transactions: []
           };
           paymentMethod.transactions.push(transaction.response);
-          Meteor.call("cart/processPayment", paymentMethod);
+
+          Meteor.call("cart/submitPayment", paymentMethod);
+
         } else {
           handlePaypalSubmitError(transaction.error);
           uiEnd(template, "Resubmit payment");
