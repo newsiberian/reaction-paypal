@@ -51,7 +51,7 @@ Router.map(function() {
             transactions: [result]
           };
           try {
-            CartWorkflow.paymentMethod(paymentMethod);
+            Meteor.call("cart/submitPayment", paymentMethod);
           } catch (_error) {
             e = _error;
             Session.set("guestCheckoutFlow", true);
