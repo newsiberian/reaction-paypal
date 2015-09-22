@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "1.0.1",
+  version: "1.1.0",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
@@ -10,11 +10,29 @@ Npm.depends({
 });
 
 Package.onUse(function (api, where) {
-  api.versionsFrom('METEOR@1.1.0.2');
-  api.use("meteor-platform");
+  api.versionsFrom('METEOR@1.2');
+
+  // meteor base packages
+  api.use("standard-minifiers");
+  api.use("mobile-experience");
+  api.use("meteor-base");
+  api.use("mongo");
+  api.use("blaze-html-templates");
+  api.use("session");
+  api.use("jquery");
+  api.use("tracker");
+  api.use("logging");
+  api.use("reload");
+  api.use("random");
+  api.use("ejson");
+  api.use("spacebars");
+  api.use("check");
+
+  // meteor add-on packages
+
   api.use("less");
   api.use("http");
-  api.use("reactioncommerce:core@0.7.0");
+  api.use("reactioncommerce:core@0.8.0");
 
   api.addFiles([
     "server/register.js", // register as a reaction package
