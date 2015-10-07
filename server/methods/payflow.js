@@ -22,7 +22,7 @@ Meteor.methods({
       };
     } catch (_error) {
       err = _error;
-      ReactionCore.Events.warn(err);
+      ReactionCore.Log.warn(err);
       result = {
         saved: false,
         error: err
@@ -44,7 +44,7 @@ Meteor.methods({
       };
     } catch (_error) {
       err = _error;
-      ReactionCore.Events.warn(err);
+      ReactionCore.Log.warn(err);
       result = {
         saved: false,
         error: err

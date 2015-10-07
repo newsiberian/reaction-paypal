@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "1.1.0",
+  version: "1.2.0",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
@@ -32,7 +32,7 @@ Package.onUse(function (api, where) {
 
   api.use("less");
   api.use("http");
-  api.use("reactioncommerce:core@0.8.0");
+  api.use("reactioncommerce:core@0.9.0");
 
   api.addFiles([
     "server/register.js", // register as a reaction package
