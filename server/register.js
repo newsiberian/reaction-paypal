@@ -9,7 +9,6 @@ ReactionCore.registerPackage({
       label: "PayPal",
       route: "dashboard/paypal",
       description: "PayPal Payment for Reaction Commerce",
-      route: "dashboard/paypal",
       icon: "fa fa-paypal",
       cycle: "3",
       container: "reaction-paypal"
