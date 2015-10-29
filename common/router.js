@@ -43,7 +43,7 @@ Router.map(function() {
             processor: "Paypal",
             method: 'Paypal Express Checkout',
             transactionId: result.TRANSACTIONID,
-            amount: result.AMT,
+            amount: parseFloat(result.AMT, 10),
             status: result.PAYMENTSTATUS,
             mode: "authorize",
             createdAt: new Date(result.ORDERTIME),
