@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "1.2.2",
+  version: "1.2.3",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
