@@ -99,6 +99,9 @@ AutoForm.addHooks("paypal-payment-form", {
             storedCard: storedCard,
             method: transaction.response.payer.payment_method,
             transactionId: transaction.response.transactions[0].related_resources[0].authorization.id,
+            metadata: {
+              authorizationId: transaction.response.transactions[0].related_resources[0].authorization.id
+            },
             amount: Number(transaction.response.transactions[0].amount.total),
             status: normalizedStatus,
             mode: normalizedMode,
