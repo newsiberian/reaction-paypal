@@ -30,28 +30,50 @@ Meteor.methods({
     }
     return result;
   },
-  paypalCapture: function(transactionId, captureDetails) {
-    var err, result, wrappedFunc;
-    check(transactionId, String);
-    check(captureDetails, Object);
+
+
+  /**
+   * Capture an authorized PayPal transaction
+   * @param  {Object} paymentMethod A PaymentMethod object
+   * @return {Object} results from PayPal normalized
+   */
+  "paypal/payment/capture": function(paymentMethod) {
+    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
     this.unblock();
+
     PayFlow.configure(Meteor.Paypal.payflowAccountOptions());
-    wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization);
+
+    let result;
+    const wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization);
+    const captureDetails = {
+      amount: {
+        currency: "USD",
+        total: parseFloat(paymentMethod.amount, 10)
+      },
+      is_final_capture: true // eslint-disable-line camelcase
+    };
+
     try {
+      const response = wrappedFunc(paymentMethod.metadata.authorizationId, captureDetails);
+
       result = {
         saved: true,
-        response: wrappedFunc(transactionId, captureDetails)
+        metadata: {
+          parentPaymentId: response.parent_payment,
+          captureId: response.id
+        },
+        rawTransaction: response
       };
-    } catch (_error) {
-      err = _error;
-      ReactionCore.Log.warn(err);
+    } catch (e) {
+      ReactionCore.Log.warn(e);
       result = {
         saved: false,
-        error: err
+        error: e
       };
     }
     return result;
   },
+
   getPayflowSettings: function() {
     var payflowSettings, settings;
     settings = Meteor.Paypal.payflowAccountOptions();
