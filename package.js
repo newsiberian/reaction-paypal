@@ -37,6 +37,7 @@ Package.onUse(function (api, where) {
   api.addFiles([
     "server/register.js", // register as a reaction package
     "server/browserPolicy.js", // set browser policy to allow PayPal scripts and images
+    "server/methods/common.js", // Common methods for managing paypal things
     "server/methods/express.js", // server methods for express checkout
     "server/methods/payflow.js" // server methods for payflow
   ], "server");
