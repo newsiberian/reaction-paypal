@@ -37,17 +37,19 @@ Meteor.methods({
    * @param  {Object} paymentMethod A PaymentMethod object
    * @return {Object} results from PayPal normalized
    */
-  "paypal/payment/capture": function(paymentMethod) {
+  "paypal/payment/capture": function (paymentMethod) {
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
     this.unblock();
 
     PayFlow.configure(Meteor.Paypal.payflowAccountOptions());
-
     let result;
+
+    // TODO: This should be changed to some ReactionCore method
+    const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
     const wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization);
     const captureDetails = {
       amount: {
-        currency: "USD",
+        currency: shop.currency,
         total: parseFloat(paymentMethod.amount, 10)
       },
       is_final_capture: true // eslint-disable-line camelcase
