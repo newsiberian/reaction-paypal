@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "1.2.3",
+  version: "1.2.4",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
@@ -13,8 +13,6 @@ Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.2');
 
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");
@@ -27,11 +25,10 @@ Package.onUse(function (api, where) {
   api.use("ejson");
   api.use("spacebars");
   api.use("check");
-
-  // meteor add-on packages
-
+  api.use("ecmascript");
   api.use("less");
   api.use("http");
+
   api.use("reactioncommerce:core@0.9.2");
 
   api.addFiles([
