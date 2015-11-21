@@ -6,11 +6,11 @@ Package.describe({
 });
 
 Npm.depends({
-  'paypal-rest-sdk': '1.6.1'
+  "paypal-rest-sdk": "1.6.1"
 });
 
-Package.onUse(function (api, where) {
-  api.versionsFrom('METEOR@1.2');
+Package.onUse(function (api) {
+  api.versionsFrom("METEOR@1.2");
 
   // meteor base packages
   api.use("meteor-base");
@@ -58,5 +58,4 @@ Package.onUse(function (api, where) {
     "client/templates/checkout/paymentForm.html",
     "client/templates/checkout/paymentForm.js"
   ], "client");
-
 });
