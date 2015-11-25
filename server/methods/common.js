@@ -35,7 +35,7 @@ Meteor.methods({
         error: e
       };
     }
-    console.log("Attempt to make a refund", result);
+    ReactionCore.Log.info("Attempt to make a refund", result);
 
     return result;
   },
@@ -45,36 +45,37 @@ Meteor.methods({
     this.unblock();
 
     paypal.configure(Meteor.Paypal.payflowAccountOptions());
+    // handle different style refunds
+    if (paymentMethod.metadata && paymentMethod.processor === "Paypal" && paymentMethod.method === "Paypal Express Checkout") {
+      let listPayments = Meteor.wrapAsync(paypal.payment.get, paypal.payment);
+      let result;
 
-    let listPayments = Meteor.wrapAsync(paypal.payment.get, paypal.payment);
-    let result;
-
-    try {
-      let response = listPayments(paymentMethod.metadata.parentPaymentId);
-      result = [];
-
-      for (let transaction of response.transactions) {
-        for (let resource of transaction.related_resources) {
-          if (_.isObject(resource.refund)) {
-            if (resource.refund.state === "completed") {
-              result.push({
-                type: "refund",
-                created: resource.refund.create_time,
-                amount: Math.abs(resource.refund.amount.total),
-                currency: resource.refund.amount.currency,
-                rawTransaction: resource.refund
-              });
+      try {
+        ReactionCore.Log.info("paymentMethod - express", paymentMethod);
+        let response = listPayments(paymentMethod.metadata.parentPaymentId);
+        result = [];
+        for (let transaction of response.transactions) {
+          for (let resource of transaction.related_resources) {
+            if (_.isObject(resource.refund)) {
+              if (resource.refund.state === "completed") {
+                result.push({
+                  type: "refund",
+                  created: resource.refund.create_time,
+                  amount: Math.abs(resource.refund.amount.total),
+                  currency: resource.refund.amount.currency,
+                  rawTransaction: resource.refund
+                });
+              }
             }
           }
         }
+      } catch (error) {
+        ReactionCore.Log.warn("Failed to getting paypal payment info", error);
+        result = {
+          error: error
+        };
       }
-    } catch (e) {
-      ReactionCore.Log.warn("Couln't get paypal payment info", e);
-      result = {
-        error: e
-      };
     }
-
     return result;
   }
 });

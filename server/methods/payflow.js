@@ -1,20 +1,23 @@
-var PayFlow;
-
-PayFlow = Npm.require("paypal-rest-sdk");
+let PayFlow = Npm.require("paypal-rest-sdk");
 
 Meteor.methods({
-  paypalSubmit: function(transactionType, cardData, paymentData) {
-    var err, paymentObj, result, wrappedFunc;
+  "paypalSubmit": function (transactionType, cardData, paymentData) {
     check(transactionType, String);
     check(cardData, Object);
     check(paymentData, Object);
+
     this.unblock();
+    let result;
+    let err;
+    let wrappedFunc;
     PayFlow.configure(Meteor.Paypal.payflowAccountOptions());
-    paymentObj = Meteor.Paypal.paymentObj();
+    let paymentObj = Meteor.Paypal.paymentObj();
+
     paymentObj.intent = transactionType;
     paymentObj.payer.funding_instruments.push(Meteor.Paypal.parseCardData(cardData));
     paymentObj.transactions.push(Meteor.Paypal.parsePaymentData(paymentData));
     wrappedFunc = Meteor.wrapAsync(PayFlow.payment.create, PayFlow.payment);
+
     try {
       result = {
         saved: true,
@@ -76,10 +79,9 @@ Meteor.methods({
     return result;
   },
 
-  getPayflowSettings: function() {
-    var payflowSettings, settings;
-    settings = Meteor.Paypal.payflowAccountOptions();
-    payflowSettings = {
+  "getPayflowSettings": function () {
+    const settings = Meteor.Paypal.payflowAccountOptions();
+    let payflowSettings = {
       mode: settings.mode,
       enabled: settings.enabled
     };

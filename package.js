@@ -15,6 +15,7 @@ Package.onUse(function (api) {
   // meteor base packages
   api.use("meteor-base");
   api.use("mongo");
+  api.use("ecmascript");
   api.use("blaze-html-templates");
   api.use("session");
   api.use("jquery");
@@ -25,14 +26,14 @@ Package.onUse(function (api) {
   api.use("ejson");
   api.use("spacebars");
   api.use("check");
-  api.use("ecmascript");
-  api.use("less");
   api.use("http");
 
+  api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("reactioncommerce:core@0.9.2");
 
   api.addFiles([
     "server/register.js", // register as a reaction package
+    "server/logger.js", // register as a reaction package
     "server/browserPolicy.js", // set browser policy to allow PayPal scripts and images
     "server/methods/common.js", // Common methods for managing paypal things
     "server/methods/express.js", // server methods for express checkout
@@ -46,7 +47,6 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.addFiles([
-    "client/templates/paypal.less",
     "client/templates/settings/settings.html",
     "client/templates/settings/settings.js",
     "client/templates/dashboard/dashboard.html",
