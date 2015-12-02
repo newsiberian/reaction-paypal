@@ -104,19 +104,53 @@ Meteor.methods({
 
   /**
    * Capture an authorized PayPalExpress transaction
+   * https://developer.paypal.com/docs/classic/api/merchant/DoCapture_API_Operation_NVP/
    * @param  {Object} paymentMethod A PaymentMethod object
    * @return {Object} results from PayPal normalized
    */
   "paypalexpress/payment/capture": function(paymentMethod) {
-    console.log('Called stub function');
+    console.log(paymentMethod);
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-    var result;
+    var result, options, response, amount, error, authorizationId;
     this.unblock();
+    options = Meteor.Paypal.expressCheckoutAccountOptions();
+    amount = paymentMethod.transactions[0].AMT;
+    authorizationId = paymentMethod.transactions[0].TRANSACTIONID;
+
+    try {
+      response = HTTP.post(options.url, {
+        params: {
+          USER: options.username,
+          PWD: options.password,
+          SIGNATURE: options.signature,
+          VERSION: '52.0',
+          METHOD: "DoCapture",
+          AUTHORIZATIONID: authorizationId,
+          AMT: amount,
+          COMPLETETYPE: "Complete" // TODO: Allow for partial captures
+        }
+      });
+    } catch (_error) {
+      error = _error;
+      throw new Meteor.Error(error.message);
+    }
+
+    if (!response || response.statusCode !== 200) {
+      throw new Meteor.Error('Bad Response from Paypal during Capture');
+    }
+
+    response = parseResponse(response);
+
+    if (response.ACK !== 'Success') {
+      throw new Meteor.Error('ACK ' + response.ACK + ': ' + response.L_LONGMESSAGE0);
+    }
+
     result = {
       saved: true,
       metadata: {},
-      rawTransaction: {}
+      rawTransaction: response
     };
+
     return result;
   }
 });
