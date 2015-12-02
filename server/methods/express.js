@@ -100,6 +100,24 @@ Meteor.methods({
       enabled: settings.enabled
     };
     return expressCheckoutSettings;
+  },
+
+  /**
+   * Capture an authorized PayPalExpress transaction
+   * @param  {Object} paymentMethod A PaymentMethod object
+   * @return {Object} results from PayPal normalized
+   */
+  "paypalexpress/payment/capture": function(paymentMethod) {
+    console.log('Called stub function');
+    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
+    var result;
+    this.unblock();
+    result = {
+      saved: true,
+      metadata: {},
+      rawTransaction: {}
+    };
+    return result;
   }
 });
 

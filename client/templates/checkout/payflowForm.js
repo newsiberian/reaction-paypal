@@ -95,7 +95,7 @@ AutoForm.addHooks("paypal-payment-form", {
             }
           })();
           paymentMethod = {
-            processor: "Paypal",
+            processor: "PayflowPro",
             storedCard: storedCard,
             method: transaction.response.payer.payment_method,
             transactionId: transaction.response.transactions[0].related_resources[0].authorization.id,

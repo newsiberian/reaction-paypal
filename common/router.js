@@ -26,7 +26,7 @@ Router.map(function() {
       if (sessionToken !== token) {
         Session.set("expressToken", token);
         Meteor.call('confirmPaymentAuthorization', cart._id, token, payerId, function(error, result) {
-          var e, msg, paymentMethod, ref;
+          var e, msg, paymentMethod, ref, status;
           if (error) {
             msg = (error != null ? error.error : void 0) || i18n.t("checkoutPayment.processingError", "There was a problem with your payment.");
             Alerts.add(msg, "danger", {
@@ -39,12 +39,21 @@ Router.map(function() {
             }
             return;
           }
+
+          // Normalize status to be 'created' for new orders
+          if (result.PAYMENTSTATUS === "Pending") {
+            status = 'created';
+          } else {
+            status = result.PAYMENTSTATUS;
+          }
+
+          console.log('Setting paymentMethod status to ' + status);
           paymentMethod = {
-            processor: "Paypal",
+            processor: "PaypalExpress",
             method: 'Paypal Express Checkout',
             transactionId: result.TRANSACTIONID,
             amount: parseFloat(result.AMT, 10),
-            status: result.PAYMENTSTATUS,
+            status: status,
             mode: "authorize",
             createdAt: new Date(result.ORDERTIME),
             updatedAt: new Date(result.ORDERTIME),
