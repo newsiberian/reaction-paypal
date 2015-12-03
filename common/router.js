@@ -47,7 +47,6 @@ Router.map(function() {
             status = result.PAYMENTSTATUS;
           }
 
-          console.log('Setting paymentMethod status to ' + status);
           paymentMethod = {
             processor: "PaypalExpress",
             method: 'Paypal Express Checkout',

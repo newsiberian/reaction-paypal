@@ -108,8 +108,6 @@ Meteor.methods({
         error: e
       };
     }
-    console.log("Attempt to make a refund", result);
-
     return result;
   },
 

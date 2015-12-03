@@ -140,8 +140,6 @@ Meteor.methods({
     }
 
     response = parseResponse(response);
-    console.log('Response from Capture');
-    console.log(JSON.stringify(response, null, 4));
 
     if (response.ACK !== 'Success') {
       throw new Meteor.Error('ACK ' + response.ACK + ': ' + response.L_LONGMESSAGE0);
