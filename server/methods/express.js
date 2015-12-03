@@ -1,4 +1,5 @@
 var parseResponse;
+var nvpVersion = '52.0';
 
 Meteor.methods({
   getExpressCheckoutToken: function(cartId) {
@@ -24,7 +25,7 @@ Meteor.methods({
           PWD: options.password,
           SIGNATURE: options.signature,
           SOLUTIONTYPE: 'Mark',
-          VERSION: '52.0',
+          VERSION: nvpVersion,
           PAYMENTACTION: 'Authorization',
           AMT: amount,
           RETURNURL: options.return_url,
@@ -70,7 +71,7 @@ Meteor.methods({
           USER: options.username,
           PWD: options.password,
           SIGNATURE: options.signature,
-          VERSION: '52.0',
+          VERSION: nvpVersion,
           PAYMENTACTION: 'Authorization',
           AMT: amount,
           METHOD: 'DoExpressCheckoutPayment',
@@ -109,21 +110,20 @@ Meteor.methods({
    * @return {Object} results from PayPal normalized
    */
   "paypalexpress/payment/capture": function(paymentMethod) {
-    console.log(paymentMethod);
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-    var result, options, response, amount, error, authorizationId;
+    var result, options, response, amount, error, authorizationId, currencycode;
     this.unblock();
     options = Meteor.Paypal.expressCheckoutAccountOptions();
     amount = paymentMethod.transactions[0].AMT;
     authorizationId = paymentMethod.transactions[0].TRANSACTIONID;
-
+    currencycode = paymentMethod.transactions[0].CURRENCYCODE;
     try {
       response = HTTP.post(options.url, {
         params: {
           USER: options.username,
           PWD: options.password,
           SIGNATURE: options.signature,
-          VERSION: '52.0',
+          VERSION: nvpVersion,
           METHOD: "DoCapture",
           AUTHORIZATIONID: authorizationId,
           AMT: amount,
@@ -140,6 +140,8 @@ Meteor.methods({
     }
 
     response = parseResponse(response);
+    console.log('Response from Capture');
+    console.log(JSON.stringify(response, null, 4));
 
     if (response.ACK !== 'Success') {
       throw new Meteor.Error('ACK ' + response.ACK + ': ' + response.L_LONGMESSAGE0);
@@ -147,12 +149,86 @@ Meteor.methods({
 
     result = {
       saved: true,
+      authorizationId: response.AUTHORIZATIONID,
+      transactionId: response.TRANSACTIONID,
+      currencycode: currencycode,
       metadata: {},
       rawTransaction: response
     };
 
     return result;
+  },
+
+  /**
+   * Refund an order using the PayPay Express method
+   * https://developer.paypal.com/docs/classic/api/merchant/RefundTransaction_API_Operation_NVP/
+   * @param  {Object} paymentMethod A PaymentMethod object
+   * @param {Number} amount to be refunded
+   * @return {Object} results from PayPal normalized
+   */
+
+  "paypalexpress/refund/create": function(paymentMethod, amount) {
+    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
+    check(amount, Number);
+    var result, response, options, error, transactionId, currencycode;
+    this.unblock();
+    options = Meteor.Paypal.expressCheckoutAccountOptions();
+    var previousTransaction = paymentMethod.transactions[1];
+    transactionId = previousTransaction.transactionId;
+    currencycode = previousTransaction.CURRENCYCODE;
+
+    try {
+      response = HTTP.post(options.url, {
+        params: {
+          USER: options.username,
+          PWD: options.password,
+          SIGNATURE: options.signature,
+          VERSION: nvpVersion,
+          METHOD: 'RefundTransaction',
+          TRANSACTIONID: transactionId,
+          REFUNDTYPE: 'Partial',
+          AMT: amount,
+          CURRENCYCODE: 'USD'
+        }
+      });
+    }  catch (_error) {
+      error = _error;
+      throw new Meteor.Error(error.message);
+    }
+
+    if (!response || response.statusCode !== 200) {
+      throw new Meteor.Error('Bad Response from Paypal during Capture');
+    }
+
+    response = parseResponse(response);
+
+    if (response.ACK !== 'Success') {
+      throw new Meteor.Error('ACK ' + response.ACK + ': ' + response.L_LONGMESSAGE0);
+    }
+
+    result = {
+      saved: true,
+      transactionId: transactionId,
+      refundTransactionId: response.REFUNDTRANSACTIONID,
+      grossRefundAmount: response.GROSSREFUNDAMT,
+      netRefundAmount: response.NETREFUNDAMT,
+      correlationId: response.CORRELATIONID,
+      currencycode: currencycode,
+      amount: amount,
+      metadata: {},
+      rawTransaction: response
+    };
+
+    return result;
+
+
+
+  },
+  "paypalexpress/refund/list": function() {
+    console.log('Executed stub function for refund/list');
+    return [];
   }
+
 });
 
 parseResponse = function(response) {
