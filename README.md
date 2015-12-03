@@ -15,6 +15,12 @@ Supports checkout payments with either, or both "Express Checkout" and "PayFlow 
 
 https://www.paypal.com/us/webapps/mpp/product-selection
 
+Payflow Pro is supported via the PayPal-Node-SDK (http://paypal.github.io/PayPal-node-SDK/) while Express uses the
+NVP (Name/Value Pair) API via raw HTTP (https://developer.paypal.com/docs/classic/api/#ec)
+
+Express is a hybrid checkout method that allows users to pay with their PayPal account without entering payment
+details on your site. Thus it is implemented slightly different than other more traditional server-side only methods.
+
 Payflow Payment Gateway handles all major credit and debit cards inline. https://www.paypal.com/webapps/mpp/payflow-payment-gateway while "Express Checkout" is a modal paypal form.  Neither solution has users leaving your checkout process.
 
 > **International Payments** Make sure you check the PayPal documentation for which countries are supported. Express Checkout supports more countries than PayFlow.
