@@ -1,55 +1,55 @@
-Router.map(function() {
-  this.route('dashboard/paypal', {
+Router.map(function () {
+  this.route("dashboard/paypal", {
     controller: ShopAdminController,
-    path: '/dashboard/paypal',
-    template: 'paypalDashboard',
-    waitOn: function() {
+    path: "/dashboard/paypal",
+    template: "paypalDashboard",
+    waitOn: function () {
       return ReactionCore.Subscriptions.Packages;
     }
   });
-  this.route('paypalExpressReturn', {
-    path: '/paypal/done',
+  this.route("paypalExpressReturn", {
+    path: "/paypal/done",
     yieldTemplates: {
       checkoutHeader: {
         to: "layoutHeader"
       }
     },
-    onBeforeAction: function() {
-      var cart, payerId, sessionToken, token;
-      payerId = this.params.query.PayerID;
-      token = this.params.query.token;
-      cart = ReactionCore.Collections.Cart.findOne();
+    onBeforeAction: function () {
+      let payerId = this.params.query.PayerID;
+      let token = this.params.query.token;
+      let cart = ReactionCore.Collections.Cart.findOne();
       if (!cart) {
         return;
       }
-      sessionToken = Session.get("expressToken");
+      let sessionToken = Session.get("expressToken");
       if (sessionToken !== token) {
         Session.set("expressToken", token);
-        Meteor.call('confirmPaymentAuthorization', cart._id, token, payerId, function(error, result) {
-          var e, msg, paymentMethod, ref, status;
+        Meteor.call("confirmPaymentAuthorization", cart._id, token, payerId, function (error, result) {
+          let ref;
           if (error) {
-            msg = (error != null ? error.error : void 0) || i18n.t("checkoutPayment.processingError", "There was a problem with your payment.");
+            let msg = (error !== null ? error.error : void 0) || i18n.t("checkoutPayment.processingError",
+                "There was a problem with your payment.");
             Alerts.add(msg, "danger", {
               placement: "paymentMethod"
             });
-            if ((error != null ? (ref = error.details) != null ? ref.L_ERRORCODE0 : void 0 : void 0) === '10415') {
-              Router.go('cartCompleted', {
+            if ((error !== null ? (ref = error.details) !== null ? ref.L_ERRORCODE0 : void 0 : void 0) === "10415") {
+              Router.go("cartCompleted", {
                 _id: cart._id
               });
             }
             return;
           }
-
+          let status;
           // Normalize status to be 'created' for new orders
           if (result.PAYMENTSTATUS === "Pending") {
-            status = 'created';
+            status = "created";
           } else {
             status = result.PAYMENTSTATUS;
           }
 
-          paymentMethod = {
+          let paymentMethod = {
             processor: "PaypalExpress",
-            method: 'Paypal Express Checkout',
+            method: "Paypal Express Checkout",
             transactionId: result.TRANSACTIONID,
             amount: parseFloat(result.AMT, 10),
             status: status,
@@ -67,14 +67,14 @@ Router.map(function() {
           }
         });
       }
-      this.render('loading');
+      this.render("loading");
     }
   });
-  return this.route('paypalExpressCancel', {
-    path: '/paypal/cancel',
-    action: function() {
+  return this.route("paypalExpressCancel", {
+    path: "/paypal/cancel",
+    action: function () {
       Session.set("guestCheckoutFlow", true);
-      return this.redirect('/checkout');
+      return this.redirect("/checkout");
     }
   });
 });
