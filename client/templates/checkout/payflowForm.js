@@ -1,31 +1,29 @@
-var handlePaypalSubmitError, hidePaymentAlert, paymentAlert, submitting, uiEnd;
-
-uiEnd = function(template, buttonText) {
+uiEnd = function (template, buttonText) {
   template.$(".cart-checkout-step *").removeAttr("disabled");
   template.$("#btn-complete-order").text(buttonText);
   return template.$("#btn-processing").addClass("hidden");
 };
 
-paymentAlert = function(errorMessage) {
+paymentAlert = function (errorMessage) {
   return $(".alert").removeClass("hidden").text(errorMessage);
 };
 
-hidePaymentAlert = function() {
-  return $(".alert").addClass("hidden").text('');
+hidePaymentAlert = function () {
+  return $(".alert").addClass("hidden").text("");
 };
 
-handlePaypalSubmitError = function(error) {
+handlePaypalSubmitError = function (error) {
   var errors, formattedError, i, len, ref, ref1, ref2, results, serverError, singleError;
-  singleError = error != null ? (ref = error.response) != null ? ref.error_description : void 0 : void 0;
-  serverError = error != null ? (ref1 = error.response) != null ? ref1.message : void 0 : void 0;
-  errors = (error != null ? (ref2 = error.response) != null ? ref2.details : void 0 : void 0) || [];
+  singleError = error !== null ? (ref = error.response) !== null ? ref.error_description : void 0 : void 0;
+  serverError = error !== null ? (ref1 = error.response) !== null ? ref1.message : void 0 : void 0;
+  errors = (error !== null ? (ref2 = error.response) !== null ? ref2.details : void 0 : void 0) || [];
   if (singleError) {
     return paymentAlert("Oops! " + singleError);
   } else if (errors.length) {
     results = [];
     for (i = 0, len = errors.length; i < len; i++) {
-      error = errors[i];
-      formattedError = "Oops! " + error.issue + ": " + error.field.split(/[. ]+/).pop().replace(/_/g, ' ');
+      let thisError = errors[i];
+      formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
       results.push(paymentAlert(formattedError));
     }
     return results;
@@ -34,16 +32,14 @@ handlePaypalSubmitError = function(error) {
   }
 };
 
-submitting = false;
 
 AutoForm.addHooks("paypal-payment-form", {
-  onSubmit: function(doc) {
-    var form, payerNamePieces, storedCard, template;
-    submitting = true;
-    template = this.template;
+  onSubmit: function (doc) {
+    let submitting = true;
+    let template = this.template;
     hidePaymentAlert();
-    payerNamePieces = doc.payerName.split(" ");
-    form = {
+    let payerNamePieces = doc.payerName.split(" ");
+    let form = {
       first_name: payerNamePieces[0],
       last_name: payerNamePieces[1],
       number: doc.cardNumber,
@@ -52,19 +48,18 @@ AutoForm.addHooks("paypal-payment-form", {
       cvv2: doc.cvv,
       type: getCardType(doc.cardNumber)
     };
-    storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    let storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Meteor.Paypal.authorize(form, {
       total: ReactionCore.Collections.Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
-    }, function(error, transaction) {
-      var normalizedMode, normalizedStatus, paymentMethod;
+    }, function (error, transaction) {
       submitting = false;
       if (error) {
         handlePaypalSubmitError(error);
         uiEnd(template, "Resubmit payment");
       } else {
         if (transaction.saved === true) {
-          normalizedStatus = (function() {
+          let normalizedStatus = (function () {
             switch (transaction.response.state) {
               case "created":
                 return "created";
@@ -82,7 +77,7 @@ AutoForm.addHooks("paypal-payment-form", {
                 return "failed";
             }
           })();
-          normalizedMode = (function() {
+          let normalizedMode = (function () {
             switch (transaction.response.intent) {
               case "sale":
                 return "capture";
@@ -94,7 +89,7 @@ AutoForm.addHooks("paypal-payment-form", {
                 return "capture";
             }
           })();
-          paymentMethod = {
+          let paymentMethod = {
             processor: "PayflowPro",
             storedCard: storedCard,
             method: transaction.response.payer.payment_method,
@@ -110,9 +105,7 @@ AutoForm.addHooks("paypal-payment-form", {
             transactions: []
           };
           paymentMethod.transactions.push(transaction.response);
-
           Meteor.call("cart/submitPayment", paymentMethod);
-
         } else {
           handlePaypalSubmitError(transaction.error);
           uiEnd(template, "Resubmit payment");
@@ -121,12 +114,12 @@ AutoForm.addHooks("paypal-payment-form", {
     });
     return false;
   },
-  beginSubmit: function() {
+  beginSubmit: function () {
     this.template.$(".cart-checkout-step *").attr("disabled", true);
     this.template.$("#btn-complete-order").text("Submitting ");
     return this.template.$("#btn-processing").removeClass("hidden");
   },
-  endSubmit: function() {
+  endSubmit: function () {
     if (!submitting) {
       return uiEnd(this.template, "Complete your order");
     }
