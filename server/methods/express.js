@@ -50,7 +50,7 @@ Meteor.methods({
     if (parsedResponse.ACK !== "Success") {
       throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
     }
-    return response.TOKEN;
+    return parsedResponse.TOKEN;
   },
   "confirmPaymentAuthorization": function (cartId, token, payerId) {
     check(cartId, String);
