@@ -1,36 +1,41 @@
-uiEnd = function (template, buttonText) {
+/* eslint camelcase: 0 */
+
+function uiEnd(template, buttonText) {
   template.$(".cart-checkout-step *").removeAttr("disabled");
   template.$("#btn-complete-order").text(buttonText);
   return template.$("#btn-processing").addClass("hidden");
-};
+}
 
-paymentAlert = function (errorMessage) {
+function paymentAlert(errorMessage) {
   return $(".alert").removeClass("hidden").text(errorMessage);
-};
+}
 
-hidePaymentAlert = function () {
+function hidePaymentAlert() {
   return $(".alert").addClass("hidden").text("");
-};
+}
 
-handlePaypalSubmitError = function (error) {
-  var errors, formattedError, i, len, ref, ref1, ref2, results, serverError, singleError;
-  singleError = error !== null ? (ref = error.response) !== null ? ref.error_description : void 0 : void 0;
-  serverError = error !== null ? (ref1 = error.response) !== null ? ref1.message : void 0 : void 0;
-  errors = (error !== null ? (ref2 = error.response) !== null ? ref2.details : void 0 : void 0) || [];
+function handlePaypalSubmitError(error) {
+  var results;
+  let ref;
+  let ref1;
+  let ref2;
+  let singleError = error !== null ? (ref = error.response) !== null ? ref.error_description : void 0 : void 0;
+  let serverError = error !== null ? (ref1 = error.response) !== null ? ref1.message : void 0 : void 0;
+  let errors = (error !== null ? (ref2 = error.response) !== null ? ref2.details : void 0 : void 0) || [];
   if (singleError) {
     return paymentAlert("Oops! " + singleError);
   } else if (errors.length) {
     results = [];
-    for (i = 0, len = errors.length; i < len; i++) {
+    for (let i = 0, len = errors.length; i < len; i++) {
       let thisError = errors[i];
-      formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
+      let formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
       results.push(paymentAlert(formattedError));
     }
     return results;
   } else if (serverError) {
     return paymentAlert("Oops! " + serverError);
   }
-};
+}
 
 
 AutoForm.addHooks("paypal-payment-form", {
