@@ -25,14 +25,13 @@ Router.map(function () {
       if (sessionToken !== token) {
         Session.set("expressToken", token);
         Meteor.call("confirmPaymentAuthorization", cart._id, token, payerId, function (error, result) {
-          let ref;
           if (error) {
             let msg = (error !== null ? error.error : void 0) || i18n.t("checkoutPayment.processingError",
                 "There was a problem with your payment.");
             Alerts.add(msg, "danger", {
               placement: "paymentMethod"
             });
-            if ((error !== null ? (ref = error.details) !== null ? ref.L_ERRORCODE0 : void 0 : void 0) === "10415") {
+            if (getError()) {
               Router.go("cartCompleted", {
                 _id: cart._id
               });
@@ -78,3 +77,11 @@ Router.map(function () {
     }
   });
 });
+
+function getError(error) {
+  if (error !== null) {
+    if (error.details !== null) {
+      return error.details.L_ERRORCODE0 === "10415";
+    }
+  }
+}
