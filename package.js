@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Npm.depends({
-  "paypal-rest-sdk": "1.6.1"
+  "paypal-rest-sdk": "1.6.6"
 });
 
 Package.onUse(function (api) {
