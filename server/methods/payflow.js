@@ -42,10 +42,11 @@ Meteor.methods({
     // TODO: This should be changed to some ReactionCore method
     const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
     const wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization);
+    let captureTotal = Math.round(parseFloat(paymentMethod.amount) * 100) / 100;
     const captureDetails = {
       amount: {
         currency: shop.currency,
-        total: parseFloat(paymentMethod.amount, 10)
+        total: captureTotal
       },
       is_final_capture: true // eslint-disable-line camelcase
     };
