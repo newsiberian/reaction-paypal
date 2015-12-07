@@ -1,13 +1,16 @@
 {
   "dependencies": {
     "paypal-rest-sdk": {
-      "version": "1.6.1",
+      "version": "1.6.6",
       "dependencies": {
         "buffer-crc32": {
           "version": "0.2.5"
         },
-        "node-uuid": {
-          "version": "1.4.3"
+        "semver": {
+          "version": "5.1.0"
+        },
+        "uuid": {
+          "version": "2.0.1"
         }
       }
     }
