@@ -3,6 +3,12 @@ let parseRefundReponse;
 const nvpVersion = "52.0";
 
 Meteor.methods({
+  /**
+   * Acquire the Token required for Paypal Express transactions
+   * https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
+   * @param  {String} cartId Reference to the Cart object to be processed
+   * @return {String} Paypal Token
+   */
   "getExpressCheckoutToken": function (cartId) {
     check(cartId, String);
     this.unblock();
@@ -52,6 +58,14 @@ Meteor.methods({
     }
     return parsedResponse.TOKEN;
   },
+  /**
+   * Perform the Paypal Express payment application
+   * https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/
+   * @param  {String} cartId Reference to the cart we are checking out
+   * @param  {String} token The Token provided by Paypal for this transaction
+   * @param  {String} payerId Reference to the payer
+   * @return {Object} results from PayPal normalized
+   */
   "confirmPaymentAuthorization": function (cartId, token, payerId) {
     check(cartId, String);
     check(token, String);
@@ -90,6 +104,11 @@ Meteor.methods({
     }
     return parsedResponse;
   },
+
+  /**
+   * Return the settings for the Paypal Express payment Method
+   * @return {Object} Express Checkout settings
+   */
   "getExpressCheckoutSettings": function () {
     let settings = Meteor.Paypal.expressCheckoutAccountOptions();
     let expressCheckoutSettings = {
@@ -158,7 +177,7 @@ Meteor.methods({
    * https://developer.paypal.com/docs/classic/api/merchant/RefundTransaction_API_Operation_NVP/
    * @param  {Object} paymentMethod A PaymentMethod object
    * @param {Number} amount to be refunded
-   * @return {Object} results from PayPal normalized
+   * @return {Object} Transaction results from PayPal normalized
    */
   "paypalexpress/refund/create": function (paymentMethod, amount) {
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
@@ -167,7 +186,7 @@ Meteor.methods({
     let options = Meteor.Paypal.expressCheckoutAccountOptions();
     let previousTransaction = paymentMethod.transactions[1];
     let transactionId = previousTransaction.transactionId;
-    let currencycode = previousTransaction.CURRENCYCODE;
+    let currencycode = previousTransaction.currencycode;
     let response;
     try {
       response = HTTP.post(options.url, {
@@ -210,12 +229,19 @@ Meteor.methods({
       grossRefundAmount: parsedResponse.GROSSREFUNDAMT,
       netRefundAmount: parsedResponse.NETREFUNDAMT,
       correlationId: parsedResponse.CORRELATIONID,
-      currency: parsedResponse.CURRENCYCODE,
+      currencycode: parsedResponse.CURRENCYCODE,
       amount: amountFormatted,
       rawTransaction: parsedResponse
     };
     return result;
   },
+  /**
+   * Query Paypal Express NVP API for Refund transactions
+   * Refunds returned here are listed in the dashboard
+   * https://developer.paypal.com/docs/classic/api/merchant/GetTransactionDetails_API_Operation_NVP/
+   * @param  {Object} paymentMethod A PaymentMethod object
+   * @return {array}  Refunds from PayPal query, normalized
+   */
   "paypalexpress/refund/list": function (paymentMethod) {
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
     this.unblock();
@@ -248,7 +274,7 @@ Meteor.methods({
     if (parsedResponse.ACK !== "Success") {
       throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
     }
-    let result = parseRefundReponse(response);
+    let result = parseRefundReponse(parsedResponse);
     return result;
   }
 
@@ -265,6 +291,11 @@ parseResponse = function (response) {
   return result;
 };
 
+/**
+ * Parse PayPal's 'unique' Transaction Query response to look for refunds
+ * @param  {Object} response The response from Paypal
+ * @return {Object} Refunds, normalized to an Array
+ */
 parseRefundReponse = function (response) {
   let paypalArray = [];
 
