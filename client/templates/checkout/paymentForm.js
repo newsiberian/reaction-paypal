@@ -14,10 +14,10 @@ Template.paypalPaymentForm.onCreated(function () {
 Template.paypalPaymentForm.helpers({
   expressCheckoutEnabled: function () {
     let expressCheckoutSettings = Session.get("expressCheckoutSettings");
-    return expressCheckoutSettings !== null ? expressCheckoutSettings.enabled : void 0;
+    return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : void 0;
   },
   payflowEnabled: function () {
     let payflowSettings = Session.get("payflowSettings");
-    return payflowSettings !== null ? payflowSettings.enabled : void 0;
+    return payflowSettings !== undefined ? payflowSettings.enabled : void 0;
   }
 });
