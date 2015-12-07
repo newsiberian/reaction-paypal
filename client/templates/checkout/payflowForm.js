@@ -14,18 +14,22 @@ function hidePaymentAlert() {
   return $(".alert").addClass("hidden").text("");
 }
 
+function getError(error, detailSubpart) {
+  if (error !== null) {
+    if (error.response !== null) {
+      return error.response[detailSubpart];
+    }
+  }
+}
+
 function handlePaypalSubmitError(error) {
-  var results;
-  let ref;
-  let ref1;
-  let ref2;
-  let singleError = error !== null ? (ref = error.response) !== null ? ref.error_description : void 0 : void 0;
-  let serverError = error !== null ? (ref1 = error.response) !== null ? ref1.message : void 0 : void 0;
-  let errors = (error !== null ? (ref2 = error.response) !== null ? ref2.details : void 0 : void 0) || [];
+  let results = [];
+  let singleError = getError(error, "error_description");
+  let serverError = getError(error, "message");
+  let errors = getError(error, "response") || [];
   if (singleError) {
     return paymentAlert("Oops! " + singleError);
   } else if (errors.length) {
-    results = [];
     for (let i = 0, len = errors.length; i < len; i++) {
       let thisError = errors[i];
       let formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
@@ -37,12 +41,10 @@ function handlePaypalSubmitError(error) {
   }
 }
 
-
 AutoForm.addHooks("paypal-payment-form", {
   onSubmit: function (doc) {
-    let submitting = true;
-    let template = this.template;
     hidePaymentAlert();
+    let template = this.template;
     let payerNamePieces = doc.payerName.split(" ");
     let form = {
       first_name: payerNamePieces[0],
