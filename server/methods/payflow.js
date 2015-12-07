@@ -1,4 +1,4 @@
-let PayFlow = Npm.require("paypal-rest-sdk");
+const PayFlow = Npm.require("paypal-rest-sdk");
 
 Meteor.methods({
   "payflowProSubmit": function (transactionType, cardData, paymentData) {
@@ -76,9 +76,9 @@ Meteor.methods({
     check(amount, Number);
     this.unblock();
 
-    paypal.configure(Meteor.Paypal.payflowAccountOptions());
+    PayFlow.configure(Meteor.Paypal.payflowAccountOptions());
 
-    let createRefund = Meteor.wrapAsync(paypal.capture.refund, paypal.capture);
+    let createRefund = Meteor.wrapAsync(PayFlow.capture.refund, PayFlow.capture);
     let result;
 
     try {
@@ -110,9 +110,9 @@ Meteor.methods({
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
     this.unblock();
 
-    paypal.configure(Meteor.Paypal.payflowAccountOptions());
+    PayFlow.configure(Meteor.Paypal.payflowAccountOptions());
 
-    let listPayments = Meteor.wrapAsync(paypal.payment.get, paypal.payment);
+    let listPayments = Meteor.wrapAsync(PayFlow.payment.get, PayFlow.payment);
     let result;
 
     try {
