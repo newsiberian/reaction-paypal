@@ -1,22 +1,17 @@
-var containerElement, doSetup, expressCheckoutSettings, ready;
+let containerElement = null;
+let ready = false;
+let expressCheckoutSettings = null;
 
-containerElement = null;
-
-ready = false;
-
-expressCheckoutSettings = null;
-
-doSetup = function () {
+function doSetup() {
   if (containerElement && ready && expressCheckoutSettings && expressCheckoutSettings.enabled) {
     return paypal.checkout.setup(expressCheckoutSettings.merchantId, {
       environment: expressCheckoutSettings.mode,
       container: containerElement,
       click: function () {
-        var cart;
         paypal.checkout.initXO();
-        cart = ReactionCore.Collections.Cart.findOne();
+        let cart = ReactionCore.Collections.Cart.findOne();
         if (!cart) {
-          return;
+          return undefined;
         }
         return Meteor.call("getExpressCheckoutToken", cart._id, function (error, token) {
           if (error) {
@@ -25,15 +20,14 @@ doSetup = function () {
               placement: "paymentMethod"
             });
             return paypal.checkout.closeFlow();
-          } else {
-            let url = paypal.checkout.urlPrefix + token;
-            return paypal.checkout.startFlow(url);
           }
+          let url = paypal.checkout.urlPrefix + token;
+          return paypal.checkout.startFlow(url);
         });
       }
     });
   }
-};
+}
 
 window.paypalCheckoutReady = function () {
   ready = true;
