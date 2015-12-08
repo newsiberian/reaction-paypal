@@ -1,7 +1,5 @@
-
-
 Template.paypalDashboard.helpers({
-  packageData: function() {
+  packageData: function () {
     return ReactionCore.Collections.Packages.findOne({
       name: "reaction-paypal"
     });

@@ -1,4 +1,4 @@
-Meteor.startup(function() {
+Meteor.startup(function () {
   BrowserPolicy.content.allowEval();
   BrowserPolicy.content.allowOriginForAll("http://www.paypal.com");
   BrowserPolicy.content.allowOriginForAll("http://www.paypalobjects.com");

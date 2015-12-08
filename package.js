@@ -1,12 +1,12 @@
 Package.describe({
   summary: "Reaction Paypal - PayPal payments for Reaction Commerce",
   name: "reactioncommerce:reaction-paypal",
-  version: "1.2.4",
+  version: "1.2.5",
   git: "https://github.com/reactioncommerce/reaction-paypal.git"
 });
 
 Npm.depends({
-  "paypal-rest-sdk": "1.6.1"
+  "paypal-rest-sdk": "1.6.6"
 });
 
 Package.onUse(function (api) {
@@ -34,7 +34,6 @@ Package.onUse(function (api) {
   api.addFiles([
     "server/register.js", // register as a reaction package
     "server/browserPolicy.js", // set browser policy to allow PayPal scripts and images
-    "server/methods/common.js", // Common methods for managing paypal things
     "server/methods/express.js", // server methods for express checkout
     "server/methods/payflow.js" // server methods for payflow
   ], "server");

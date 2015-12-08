@@ -1,52 +1,45 @@
-var containerElement, doSetup, expressCheckoutSettings, ready;
+let containerElement = null;
+let ready = false;
+let expressCheckoutSettings = null;
 
-containerElement = null;
-
-ready = false;
-
-expressCheckoutSettings = null;
-
-doSetup = function() {
+function doSetup() {
   if (containerElement && ready && expressCheckoutSettings && expressCheckoutSettings.enabled) {
     return paypal.checkout.setup(expressCheckoutSettings.merchantId, {
       environment: expressCheckoutSettings.mode,
       container: containerElement,
-      click: function() {
-        var cart;
+      click: function () {
         paypal.checkout.initXO();
-        cart = ReactionCore.Collections.Cart.findOne();
+        let cart = ReactionCore.Collections.Cart.findOne();
         if (!cart) {
-          return;
+          return undefined;
         }
-        return Meteor.call("getExpressCheckoutToken", cart._id, function(error, token) {
-          var msg, url;
+        return Meteor.call("getExpressCheckoutToken", cart._id, function (error, token) {
           if (error) {
-            msg = (error != null ? error.error : void 0) || i18n.t("checkoutPayment.processingError", "There was a problem with your payment.");
+            let msg = (error !== null ? error.error : void 0) || i18n.t("checkoutPayment.processingError", "There was a problem with your payment.");
             Alerts.add(msg, "danger", {
               placement: "paymentMethod"
             });
             return paypal.checkout.closeFlow();
-          } else {
-            url = paypal.checkout.urlPrefix + token;
-            return paypal.checkout.startFlow(url);
           }
+          let url = paypal.checkout.urlPrefix + token;
+          return paypal.checkout.startFlow(url);
         });
       }
     });
   }
-};
+}
 
-window.paypalCheckoutReady = function() {
+window.paypalCheckoutReady = function () {
   ready = true;
   return doSetup();
 };
 
-Tracker.autorun(function() {
-  expressCheckoutSettings = Session.get('expressCheckoutSettings');
+Tracker.autorun(function () {
+  expressCheckoutSettings = Session.get("expressCheckoutSettings");
   return doSetup();
 });
 
-Template.paypalCheckoutButton.onRendered(function() {
-  containerElement = this.$('.paypal-checkout-button-container')[0];
+Template.paypalCheckoutButton.onRendered(function () {
+  containerElement = this.$(".paypal-checkout-button-container")[0];
   return doSetup();
 });
