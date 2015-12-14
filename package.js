@@ -58,3 +58,25 @@ Package.onUse(function (api) {
     "client/templates/checkout/paymentForm.js"
   ], "client");
 });
+
+Package.onTest(function (api) {
+  api.use("underscore");
+  api.use("random");
+  api.use("sanjo:jasmine@0.20.3");
+  api.use("velocity:html-reporter@0.9.1");
+
+  api.use("velocity:console-reporter@0.1.4");
+  api.use("accounts-base");
+  api.use("accounts-password");
+  // reaction core
+  api.use("reactioncommerce:reaction-accounts");
+  api.use("reactioncommerce:reaction-collections");
+  api.use("reactioncommerce:reaction-factories");
+  api.use("reactioncommerce:core");
+  api.use("reactioncommerce:reaction-sample-data");
+  api.use("reactioncommerce:reaction-paypal@1.2.5");
+
+  // server integration tests
+  api.addFiles("tests/jasmine/server/integration/payflow.js", "server");
+  api.export("faker", ["server"]);
+});
