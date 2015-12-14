@@ -71,7 +71,7 @@ Package.onTest(function (api) {
   // reaction core
   api.use("reactioncommerce:reaction-accounts");
   api.use("reactioncommerce:reaction-collections");
-  api.use("reactioncommerce:reaction-factories");
+  api.use("reactioncommerce:reaction-factories@0.3.3");
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-sample-data");
   api.use("reactioncommerce:reaction-paypal@1.2.5");
