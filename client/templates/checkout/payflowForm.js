@@ -58,7 +58,7 @@ AutoForm.addHooks("paypal-payment-form", {
     let storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Meteor.Paypal.authorize(form, {
       total: ReactionCore.Collections.Cart.findOne().cartTotal(),
-      currency: Shops.findOne().currency
+      currency: ReactionCore.Collections.Shops.findOne().currency
     }, function (error, transaction) {
       submitting = false;
       if (error) {
