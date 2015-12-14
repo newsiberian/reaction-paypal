@@ -3,154 +3,75 @@
 
 describe("Payment Methods", function () {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 150000; // the paypal call can take a while, so be patient
-  let user = Factory.create("user");
-  let userId = user._id;
   initPaypal();
-  ReactionCore.sessionId = Random.id(); // Required for creating a cart
-  const product = Factory.create("product");
+  describe("payflowProSubmit", function () {
+    it("should create an authorization for this amount", function (done) {
 
-  describe("Create a User", function () {
-    it("should persist user in the db", function (done) {
-      let testUser = Factory.create("user");
-      let testAccount = createAccount(testUser);
-      let accountUser = ReactionCore.Collections.Accounts.findOne(testUser._id);
-      expect(accountUser._id).toBe(testAccount._id);
+      let cart = Factory.create("cart");
+      let cartTotal = cart.cartTotal();
+
+      const cardData = {
+        first_name: "Test",
+        last_name: "User",
+        number: "4242424242424242",
+        expire_month: "3",
+        expire_year: "2017",
+        cvv2: "345",
+        type: "visa"
+      };
+      const paymentData = {
+        total: cartTotal,
+        currency: "USD"
+      };
+
+      const transactionType = "authorize";
+      let result = Meteor.call("payflowProSubmit", transactionType, cardData, paymentData);
+      expect(result).not.toBe(undefined);
+      expect(result.response.state).toBe("approved");
       done();
     });
   });
 
-  //describe("Authorize Cart", function () {
-  //  describe("cart/addToCart", function () {
-  //    beforeEach(function () {
-  //      ReactionCore.Collections.Cart.remove({});
-  //    });
-  //
-  //    it("should create an authorization for this amount", function (done) {
-  //      const cartId = Meteor.call("cart/createCart", userId);
-  //      const productId = product._id;
-  //      const variantData = product.variants[0];
-  //      const quantity = 1;
-  //      Meteor.call("cart/addToCart", cartId, productId,
-  //        variantData, quantity);
-  //      let cart = ReactionCore.Collections.Cart.findOne({
-  //        _id: cartId
-  //      }, {
-  //        items: product
-  //      });
-  //      let cartTotal = cart.cartTotal();
-  //
-  //      const cardData = {
-  //        first_name: "Test",
-  //        last_name: "User",
-  //        number: "4242424242424242",
-  //        expire_month: "3",
-  //        expire_year: "2017",
-  //        cvv2: "345",
-  //        type: "visa"
-  //      };
-  //      const paymentData = {
-  //        total: cartTotal,
-  //        currency: "USD"
-  //      };
-  //
-  //      const transactionType = "authorize";
-  //      let result = Meteor.call("payflowProSubmit", transactionType, cardData, paymentData);
-  //      expect(result.response.state).toBe("approved");
-  //      done();
-  //    });
-  //  });
-  //});
-
-  describe("Pay for an Order", function () {
-    it("should create an order from a cart", function (done) {
-      let cart = createCart(userId);
-      Meteor.call("cart/copyCartToOrder", cart._id);
-
-      expect(null).toBe(null);
+  describe("payflowpro/payment/capture", function () {
+    it("should capture the amount for a previously placed order", function (done) {
+      let order = Factory.create("order");
+      let result = authorizeOrder(order);
+      let authorizationId = result.response.transactions[0].related_resources[0].authorization.id;
+      let paymentMethod = getPaymentMethod(authorizationId);
+      let captureResult = Meteor.call("payflowpro/payment/capture", paymentMethod);
+      expect(captureResult.rawTransaction.state).toBe("completed");
       done();
     });
   });
-
-  //describe("Capture an Order", function () {
-  //  it("Should capture a payment for an order", function (done) {
-  //    const paymentMethod = getPaymentMethod();
-  //    let result = Meteor.call("payflowpro/payment/capture", paymentMethod);
-  //    console.log(result);
-  //    expect(result.rawTransaction.result).toBe("completed");
+  //
+  //describe("payflowpro/refund/create", function () {
+  //  it("Should Refund a Payment for an Order", function (done) {
+  //    expect(null).toBe(null);
   //    done();
   //  });
   //});
-
-  describe("Refund an Order", function () {
-    it("Should Refund a Payment for an Order", function (done) {
-      expect(null).toBe(null);
-      done();
-    });
-  });
 });
 
-function createUser() {
-  let meteorUser = Meteor.users.findOne();
-  console.log("Using meteorUser: " + meteorUser._id );
-  let shopId = ReactionCore.getShopId();
-  ReactionCore.Collections.Accounts.insert({
-    shopId: shopId,
-    userId: meteorUser._id
-  });
-  let user = ReactionCore.Collections.Accounts.findOne({
-    userId: meteorUser._id
-  });
-  console.log(user);
-  return user;
-}
 
-function createAccount(user) {
-  let shop = ReactionCore.getCurrentShop();
-  let shopId = ReactionCore.getShopId();
-  let roles = {};
-  if (!user.emails) user.emails = [];
-  // init default user roles
-  // we won't create users unless we have a shop.
-  if (shop) {
-    if (user.services === undefined) {
-      roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
-    } else {
-      roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
-      // also add services with email defined to user.emails[]
-      for (let service of services(user.services)) {
-        if (service.email) {
-          email = {
-            provides: "default",
-            address: service.email,
-            verified: true
-          };
-          user.emails.push(email);
-        }
-      }
-    }
-    // clone before adding roles
-    let account = _.clone(user);
-    account.userId = user._id;
-    ReactionCore.Collections.Accounts.insert(account);
-    user.roles = roles;
-    return account;
-  }
-}
+function authorizeOrder(order) {
+  let orderTotal = getOrderTotal(order);
+  console.log(orderTotal);
+  const cardData = {
+    first_name: "Test",
+    last_name: "User",
+    number: "4242424242424242",
+    expire_month: "3",
+    expire_year: "2017",
+    cvv2: "345",
+    type: "visa"
+  };
+  const paymentData = {
+    total: orderTotal,
+    currency: "USD"
+  };
 
-function createCart(userId) {
-  const product = Factory.create("product");
-  const cartId = Meteor.call("cart/createCart", userId);
-  const productId = product._id;
-  const variantData = product.variants[0];
-  const quantity = 1;
-  Meteor.call("cart/addToCart", cartId, productId,
-    variantData, quantity);
-  let cart = ReactionCore.Collections.Cart.findOne({
-    _id: cartId
-  }, {
-    items: product
-  });
-  return cart;
+  const transactionType = "authorize";
+  return Meteor.call("payflowProSubmit", transactionType, cardData, paymentData);
 }
 
 function initPaypal() {
@@ -159,23 +80,50 @@ function initPaypal() {
     shopId: ReactionCore.getShopId()
   })._id;
 
-  ReactionCore.Collections.Packages.update(paypalSettingsId, {$set: { enabled: true, settings: {
-    express_enabled: false,
-    express_mode: false,
-    payflow_enabled: true,
-    payflow_mode: false
-  }
-  }});
+  ReactionCore.Collections.Packages.update(paypalSettingsId, {
+    $set: {
+      enabled: true, settings: {
+        express_enabled: false,
+        express_mode: false,
+      }
+    }
+  });
 }
 
-function getPaymentMethod() {
+function getOrderTotal(order) {
+
+  let total;
+  let subtotal = 0;
+  let shippingTotal = 0;
+  if (order.items) {
+    for (let items of order.items) {
+      subtotal += items.quantity * items.variants.price;
+    }
+  }
+  // loop through the cart.shipping, sum shipments.
+  if (order.shipping) {
+    for (let shipment of order.shipping) {
+      shippingTotal += shipment.shipmentMethod.rate;
+    }
+  }
+
+  shippingTotal = parseFloat(shippingTotal);
+  if (!isNaN(shippingTotal)) {
+    subtotal = subtotal + shippingTotal;
+  }
+  total = subtotal.toFixed(2);
+  return total;
+}
+
+
+function getPaymentMethod(authorizationId) {
   let paymentMethod = {
     "processor": "PayflowPro",
     "storedCard": "Visa 4242",
     "method": "credit_card",
     "transactionId": "0JM39054MC1990637",
     "metadata": {
-      "authorizationId": "0JM39054MC1990637"
+      "authorizationId": authorizationId
     },
     "amount": 19.9899999999999984,
     "status": "created",
@@ -194,7 +142,7 @@ function getPaymentMethod() {
           "funding_instruments": [
             {
               "credit_card": {
-                "type" : "visa",
+                "type": "visa",
                 "number": "xxxxxxxxxxxx4242",
                 "expire_month": "3",
                 "expire_year": "2016",
