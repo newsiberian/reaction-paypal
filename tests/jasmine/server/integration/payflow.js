@@ -3,7 +3,7 @@
 
 describe("Payment Methods", function () {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 150000; // the paypal call can take a while, so be patient
-  initPaypal();
+  initPackage();
   describe("payflowProSubmit", function () {
     it("should create an authorization for this amount", function (done) {
 
@@ -43,13 +43,13 @@ describe("Payment Methods", function () {
       done();
     });
   });
-  //
-  //describe("payflowpro/refund/create", function () {
-  //  it("Should Refund a Payment for an Order", function (done) {
-  //    expect(null).toBe(null);
-  //    done();
-  //  });
-  //});
+
+  describe("payflowpro/refund/create", function () {
+    xit("Should Refund a Payment for an Order", function (done) {
+      expect(null).toBe(null);
+      done();
+    });
+  });
 });
 
 
@@ -74,25 +74,11 @@ function authorizeOrder(order) {
   return Meteor.call("payflowProSubmit", transactionType, cardData, paymentData);
 }
 
-function initPaypal() {
-  let paypalSettingsId = ReactionCore.Collections.Packages.findOne({
-    name: "reaction-paypal",
-    shopId: ReactionCore.getShopId()
-  })._id;
-
-  ReactionCore.Collections.Packages.update(paypalSettingsId, {
-    $set: {
-      enabled: true, settings: {
-        express_enabled: false,
-        express_mode: false,
-      }
-    }
-  });
+function initPackage() {
+  return ReactionRegistry.loadSettings(Assets.getText("private/settings.json"));
 }
 
 function getOrderTotal(order) {
-
-  let total;
   let subtotal = 0;
   let shippingTotal = 0;
   if (order.items) {
@@ -100,19 +86,16 @@ function getOrderTotal(order) {
       subtotal += items.quantity * items.variants.price;
     }
   }
-  // loop through the cart.shipping, sum shipments.
   if (order.shipping) {
     for (let shipment of order.shipping) {
       shippingTotal += shipment.shipmentMethod.rate;
     }
   }
-
   shippingTotal = parseFloat(shippingTotal);
   if (!isNaN(shippingTotal)) {
     subtotal = subtotal + shippingTotal;
   }
-  total = subtotal.toFixed(2);
-  return total;
+  return subtotal;
 }
 
 
