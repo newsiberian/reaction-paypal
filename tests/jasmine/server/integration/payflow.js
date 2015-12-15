@@ -6,7 +6,6 @@ describe("Payment Methods", function () {
   initPackage();
   describe("payflowProSubmit", function () {
     it("should create an authorization for this amount", function (done) {
-
       let cart = Factory.create("cart");
       let cartTotal = cart.cartTotal();
 
@@ -55,7 +54,6 @@ describe("Payment Methods", function () {
 
 function authorizeOrder(order) {
   let orderTotal = getOrderTotal(order);
-  console.log(orderTotal);
   const cardData = {
     first_name: "Test",
     last_name: "User",
@@ -101,81 +99,81 @@ function getOrderTotal(order) {
 
 function getPaymentMethod(authorizationId) {
   let paymentMethod = {
-    "processor": "PayflowPro",
-    "storedCard": "Visa 4242",
-    "method": "credit_card",
-    "transactionId": "0JM39054MC1990637",
-    "metadata": {
-      "authorizationId": authorizationId
+    processor: "PayflowPro",
+    storedCard: "Visa 4242",
+    method: "credit_card",
+    transactionId: "0JM39054MC1990637",
+    metadata: {
+      authorizationId: authorizationId
     },
-    "amount": 19.9899999999999984,
-    "status": "created",
-    "mode": "authorize",
-    "createdAt": new Date(),
-    "updatedAt": new Date(),
-    "transactions": [
+    amount: 19.9899999999999984,
+    status: "created",
+    mode: "authorize",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    transactions: [
       {
-        "id": "PAY-0D866761MK951201KKZVEIWI",
-        "create_time": "2015-12-11T03:34:49Z",
-        "update_time": "2015-12-11T03:35:01Z",
-        "state": "approved",
-        "intent": "authorize",
-        "payer": {
-          "payment_method": "credit_card",
-          "funding_instruments": [
+        id: "PAY-0D866761MK951201KKZVEIWI",
+        create_time: "2015-12-11T03:34:49Z",
+        update_time: "2015-12-11T03:35:01Z",
+        state: "approved",
+        intent: "authorize",
+        payer: {
+          payment_method: "credit_card",
+          funding_instruments: [
             {
-              "credit_card": {
-                "type": "visa",
-                "number": "xxxxxxxxxxxx4242",
-                "expire_month": "3",
-                "expire_year": "2016",
-                "first_name": "Brent",
-                "last_name": "Hoover"
+              credit_card: {
+                type: "visa",
+                number: "xxxxxxxxxxxx4242",
+                expire_month: "3",
+                expire_year: "2016",
+                first_name: "Brent",
+                last_name: "Hoover"
               }
             }
           ]
         },
-        "transactions": [
+        transactions: [
           {
-            "amount": {
-              "total": "19.99",
-              "currency": "USD",
-              "details": {
-                "subtotal": "19.99"
+            amount: {
+              total: "19.99",
+              currency: "USD",
+              details: {
+                subtotal: "19.99"
               }
             },
-            "related_resources": [
+            related_resources: [
               {
-                "authorization": {
-                  "id": "0JM39054MC1990637",
-                  "create_time": new Date(),
-                  "update_time": new Date(),
-                  "amount": {
-                    "total": "19.99",
-                    "currency": "USD",
-                    "details": {
-                      "subtotal": "19.99"
+                authorization: {
+                  id: "0JM39054MC1990637",
+                  create_time: new Date(),
+                  update_time: new Date(),
+                  amount: {
+                    total: "19.99",
+                    currency: "USD",
+                    details: {
+                      subtotal: "19.99"
                     }
                   },
-                  "state": "authorized",
-                  "parent_payment": "PAY-0D866761MK951201KKZVEIWI",
-                  "valid_until": "2016-01-09T03:34:49Z",
-                  "processor_response": {
-                    "avs_code": "X",
-                    "cvv_code": "M"
+                  state: "authorized",
+                  parent_payment: "PAY-0D866761MK951201KKZVEIWI",
+                  valid_until: "2016-01-09T03:34:49Z",
+                  processor_response: {
+                    avs_code: "X",
+                    cvv_code: "M"
                   },
-                  "fmf_details": {}
+                  fmf_details: {}
                 }
               }
             ]
           }
         ],
 
-        "httpStatusCode": 201
+        httpStatusCode: 201
       }
     ],
-    "workflow": {
-      "status": "new"
+    workflow: {
+      status: "new"
     }
   };
   return paymentMethod;
