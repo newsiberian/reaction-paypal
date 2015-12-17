@@ -44,8 +44,6 @@ Package.onUse(function (api) {
     "lib/paypal.js"
   ], ["client", "server"]);
 
-
-
   api.addFiles([
     "client/templates/paypal.less",
     "client/templates/settings/settings.html",
@@ -80,6 +78,5 @@ Package.onTest(function (api) {
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/payflow.js", "server");
-  api.addAssets("private/settings.json", "server");
   api.export("faker", ["server"]);
 });
