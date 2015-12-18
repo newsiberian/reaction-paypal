@@ -25,7 +25,6 @@ Meteor.methods({
     let currency = shop.currency;
     let options = Meteor.Paypal.expressCheckoutAccountOptions();
     let response;
-    console.log("Sending currency code: " + currency);
 
     try {
       response = HTTP.post(options.url, {
@@ -104,8 +103,6 @@ Meteor.methods({
       throw new Meteor.Error("Bad response from PayPal");
     }
     let parsedResponse = parseResponse(response);
-    console.log(response);
-    console.log(parsedResponse);
 
     if (parsedResponse.ACK !== "Success") {
       throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
