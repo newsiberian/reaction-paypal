@@ -25,6 +25,8 @@ Meteor.methods({
     let currency = shop.currency;
     let options = Meteor.Paypal.expressCheckoutAccountOptions();
     let response;
+    console.log("Sending currency code: " + currency);
+
     try {
       response = HTTP.post(options.url, {
         params: {
@@ -76,6 +78,8 @@ Meteor.methods({
       throw new Meteor.Error("Bad cart ID");
     }
     let amount = Number(cart.cartTotal());
+    let shop = ReactionCore.Collections.Shops.findOne(cart.shopId);
+    let currency = shop.currency;
     let options = Meteor.Paypal.expressCheckoutAccountOptions();
     let response;
     try {
@@ -88,6 +92,7 @@ Meteor.methods({
           PAYMENTACTION: "Authorization",
           AMT: amount,
           METHOD: "DoExpressCheckoutPayment",
+          CURRENCYCODE: currency,
           TOKEN: token,
           PAYERID: payerId
         }
@@ -99,6 +104,9 @@ Meteor.methods({
       throw new Meteor.Error("Bad response from PayPal");
     }
     let parsedResponse = parseResponse(response);
+    console.log(response);
+    console.log(parsedResponse);
+
     if (parsedResponse.ACK !== "Success") {
       throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
     }
