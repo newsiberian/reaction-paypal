@@ -147,6 +147,7 @@ Meteor.methods({
           VERSION: nvpVersion,
           METHOD: "DoCapture",
           AUTHORIZATIONID: authorizationId,
+          CURRENCYCODE: currencycode,
           AMT: amount,
           COMPLETETYPE: "Complete" // TODO: Allow for partial captures
         }
