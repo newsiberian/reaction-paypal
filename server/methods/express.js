@@ -105,7 +105,10 @@ Meteor.methods({
     let parsedResponse = parseResponse(response);
 
     if (parsedResponse.ACK !== "Success") {
-      throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
+      throw new Meteor.Error("ACK " +
+        parsedResponse.ACK + ": " +
+        parsedResponse.L_LONGMESSAGE0 + ":" +
+        parsedResponse.L_ERRORCODE0);
     }
     return parsedResponse;
   },
