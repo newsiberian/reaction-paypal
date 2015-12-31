@@ -26,7 +26,6 @@ Router.map(function () {
         Session.set("expressToken", token);
         Meteor.call("confirmPaymentAuthorization", cart._id, token, payerId, function (error, result) {
           if (error) {
-            console.log(error);
             let msg = (error !== null ? error.error : void 0) || i18n.t("checkoutPayment.processingError",
                 "There was a problem with your payment.");
             Alerts.add(msg, "danger", {
