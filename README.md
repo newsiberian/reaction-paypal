@@ -25,7 +25,13 @@ Payflow Payment Gateway handles all major credit and debit cards inline. https:/
 
 > **International Payments** Make sure you check the PayPal documentation for which countries are supported. Express Checkout supports more countries than PayFlow.
 
+**Note about refunding amounts in more than one currency**
 
+If you need to refund an order that was placed in another currency than your default currency, before you do this the
+first time you need to log into your merchant panel and "Accept" the payment. There it will ask you if you want to convert
+the payment or leave it as a balance in the new currency. You must have a balance in the currency you wish to refund so
+leave this payment as a balance. You will need to do this once for every currency you wish to accept. This applies to
+both Express and PayFlow Pro methods. If you do not do this the refund will be refused and will not process.
 
 
 

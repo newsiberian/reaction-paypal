@@ -31,7 +31,7 @@ Router.map(function () {
             Alerts.add(msg, "danger", {
               placement: "paymentMethod"
             });
-            if (getError()) {
+            if (isDuplicate(error)) {
               Router.go("cartCompleted", {
                 _id: cart._id
               });
@@ -78,10 +78,9 @@ Router.map(function () {
   });
 });
 
-function getError(error) {
-  if (error !== null) {
-    if (error.details !== null) {
-      return error.details.L_ERRORCODE0 === "10415";
-    }
-  }
+// If the error we got was that we already processed this transaction let's go ahead and move forward
+function isDuplicate(error) {
+  let errorMessage = error.message;
+  let duplicateErrorCode = "10415";
+  return errorMessage.indexOf(duplicateErrorCode) > -1;
 }

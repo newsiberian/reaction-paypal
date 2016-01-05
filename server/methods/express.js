@@ -25,6 +25,7 @@ Meteor.methods({
     let currency = shop.currency;
     let options = Meteor.Paypal.expressCheckoutAccountOptions();
     let response;
+
     try {
       response = HTTP.post(options.url, {
         params: {
@@ -76,6 +77,8 @@ Meteor.methods({
       throw new Meteor.Error("Bad cart ID");
     }
     let amount = Number(cart.cartTotal());
+    let shop = ReactionCore.Collections.Shops.findOne(cart.shopId);
+    let currency = shop.currency;
     let options = Meteor.Paypal.expressCheckoutAccountOptions();
     let response;
     try {
@@ -88,6 +91,7 @@ Meteor.methods({
           PAYMENTACTION: "Authorization",
           AMT: amount,
           METHOD: "DoExpressCheckoutPayment",
+          CURRENCYCODE: currency,
           TOKEN: token,
           PAYERID: payerId
         }
@@ -99,8 +103,12 @@ Meteor.methods({
       throw new Meteor.Error("Bad response from PayPal");
     }
     let parsedResponse = parseResponse(response);
+
     if (parsedResponse.ACK !== "Success") {
-      throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
+      throw new Meteor.Error("ACK " +
+        parsedResponse.ACK + ": " +
+        parsedResponse.L_LONGMESSAGE0 + ":" +
+        parsedResponse.L_ERRORCODE0);
     }
     return parsedResponse;
   },
@@ -142,6 +150,7 @@ Meteor.methods({
           VERSION: nvpVersion,
           METHOD: "DoCapture",
           AUTHORIZATIONID: authorizationId,
+          CURRENCYCODE: currencycode,
           AMT: amount,
           COMPLETETYPE: "Complete" // TODO: Allow for partial captures
         }
