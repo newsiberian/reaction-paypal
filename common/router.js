@@ -58,7 +58,8 @@ Router.map(function () {
             transactions: [result]
           };
           try {
-            Meteor.call("cart/submitPayment", paymentMethod);
+            Meteor.call("cart/submitPayment", paymentMethod,
+              Session.get("sessionId"));
           } catch (_error) {
             e = _error;
             Session.set("guestCheckoutFlow", true);
